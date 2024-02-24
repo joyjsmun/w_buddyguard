@@ -21,7 +21,7 @@ const Home = () => {
 
   return (
     <Layout>
-      <div className="bg-white min-h-screen flex flex-col relative ">
+      <div className="bg-white min-h-screen flex flex-col ">
         <div className="pt-9 px-4 flex justify-between items-center mt-8">
           <h1 className="text-[#121418] font-semibold text-base ">
             Gm, Joy Mun
@@ -75,7 +75,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col justify-center items-center mb-10">
+          <div className="flex flex-col justify-center items-center pt-12">
             <button className="bg-[#4F9171] px-4 py-3 w-full flex items-center justify-center text-white font-bold text-2xl rounded-xl">
               Swipe Hangout
             </button>
