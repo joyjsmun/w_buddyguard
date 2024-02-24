@@ -16,8 +16,8 @@ const Hangout = () => {
 
   return (
     <Layout>
-      <div className="bg-white  min-h-screen flex flex-col relative ">
-        <div className="pt-9  flex justify-between items-center mt-8">
+      <div className="bg-white  min-h-screen flex flex-col pb-20 ">
+        <div className="pt-9  flex justify-between items-center">
           <div className="pt-9 px-4 flex flex-col space-y-4">
             <div className="flex flex-row justify-between items-center">
               <p className="text-[#121418] font-bold text-base">Gm, Joy</p>

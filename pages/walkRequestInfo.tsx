@@ -13,8 +13,8 @@ const WalkRequestInfo = () => {
 
   return (
     <Layout>
-      <div className="bg-white min-h-screen flex flex-col items-center justify-center">
-        <div className="flex flex-col w-full space-y-4 p-4">
+      <div className="bg-white min-h-screen flex flex-col items-center ">
+        <div className="flex flex-col w-full space-y-4 p-4 mt-12">
           {/* Top Section */}
           <div className="flex flex-col space-y-2">
             <h1 className="text-[#121418] font-bold text-xl mb-4">

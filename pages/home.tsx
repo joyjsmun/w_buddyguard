@@ -31,7 +31,7 @@ const Home = () => {
               <Image src={InboxIcon} className="w-12 h-12 mr-1" alt="Inbox" />
             </button>
             <button onClick={handleSosRequestModal}>
-              <div className="w-12 h-12 ml-3 bg-red-500 rounded-2xl flex justify-center items-center">
+              <div className="w-12 h-12 ml-3 bg-[#FF5757] rounded-2xl flex justify-center items-center">
                 <span className="text-white font-bold">SOS</span>
               </div>
             </button>
@@ -76,7 +76,7 @@ const Home = () => {
             </div>
           </div>
           <div className="flex flex-col justify-center items-center pt-12">
-            <button className="bg-[#4F9171] px-4 py-3 w-full flex items-center justify-center text-white font-bold text-2xl rounded-xl">
+            <button className="bg-[#FF5757] px-4 py-3 w-full flex items-center justify-center text-white font-bold text-2xl rounded-xl">
               Swipe Hangout
             </button>
           </div>
@@ -86,15 +86,16 @@ const Home = () => {
           <Modal onClickToggleModal={handleSosRequestModal}>
             <h3 className="font-bold text-lg pb-2">SOS Message</h3>
             <p className="mb-3">We Will Send This Msg to the Buddy Guard :</p>
-            <div className="bg-red-400 w-30 h-34 mb-3 flex flex-col justify-center space-y-2 p-3 rounded-lg">
-              <p className="font-bold">
-                **Emergency Situation! Please Help Me!
+            <div className="bg-red-500 w-30 h-34 mb-3 flex flex-col justify-center space-y-2 p-3 rounded-lg">
+              <p className="font-bold text-white text-center">
+                **Emergency Situation**
               </p>
-              <p className="font-bold">SOS User : Joy M</p>
-              <p className="font-bold">
-                SOS Location Link : 1212st, Bogota, Colombia
+
+              <p className="font-bold text-white">SOS User : Joe</p>
+              <p className="font-bold text-white">
+                SOS Location Link : 1212st, Barcelona, Spain
               </p>
-              <p className="font-bold">
+              <p className="font-bold text-white">
                 Personal Contact Number : 987-232-1829
               </p>
             </div>

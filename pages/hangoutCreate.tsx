@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import poap from "./poap";
 //import zuPass from "./zuPass";
 import nft from "./nft";
@@ -46,7 +45,7 @@ const HangoutCreate = () => {
     //   );
   }
 
-  const handleTabPress = (tab: any) => {
+  const handleTabPress = (tab) => {
     setActiveTab(tab);
   };
 
@@ -58,7 +57,7 @@ const HangoutCreate = () => {
 
   return (
     <Layout>
-      <div className="bg-white flex flex-col">
+      <div className="bg-white flex flex-col pb-20">
         <div className="flex flex-col w-full ">
           <div className=" px-4 flex flex-col ">
             {/* Top Section */}
@@ -68,7 +67,7 @@ const HangoutCreate = () => {
               </h1>
             </div>
             {/* Card Section */}
-            <div className="flex-1">
+            <div className="flex-1 overflow-y-auto">
               <div className="bg-white rounded-lg py-2 mt-6">
                 {/* Create Hangout Detail*/}
                 <div className="mb-2">
