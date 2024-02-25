@@ -7,13 +7,19 @@ import {
   safety,
   trust,
 } from "../public/assets/images";
+import { useAccount } from "wagmi";
+import Modal from "@/components/modal";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const OnBoarding = () => {
   const router = useRouter();
-
+  const { address } = useAccount(); // Use useRainbow hook to get wallet information
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
 
-  const COLORS = { primary: "#F6D268", white: "#fff", black: "#072454" };
+  const handleWalletConnectModal = () => {
+    setIsWalletModalOpen(!isWalletModalOpen);
+  };
 
   const slides = [
     {
@@ -37,7 +43,7 @@ const OnBoarding = () => {
     },
   ];
 
-  const updateCurrentSlideIndex = (index: any) => {
+  const updateCurrentSlideIndex = (index: number) => {
     setCurrentSlideIndex(index);
   };
 
@@ -46,12 +52,20 @@ const OnBoarding = () => {
     if (nextSlideIndex < slides.length) {
       setCurrentSlideIndex(nextSlideIndex);
     } else {
-      router.push("/home");
+      // Only push to home if wallet is connected
+      if (address) {
+        router.push("/home");
+      } else {
+        router.push("/ConnectWalletScreen");
+      }
     }
   };
 
   const skip = () => {
-    router.push("/home");
+    // Only push to home if wallet is connected
+    if (address) {
+      router.push("/home");
+    }
   };
 
   return (
@@ -93,6 +107,11 @@ const OnBoarding = () => {
         >
           {currentSlideIndex === slides.length - 1 ? "Get Started" : "Next"}
         </button>
+        {!address && currentSlideIndex === slides.length - 1 && (
+          <Modal onClickToggleModal={handleWalletConnectModal}>
+            <ConnectButton />
+          </Modal>
+        )}
       </div>
     </div>
   );

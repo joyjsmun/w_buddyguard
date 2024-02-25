@@ -5,11 +5,13 @@ import MapImage from "../public/assets/images/map_example.png";
 import Hangout1 from "../public/assets/images/hangout1.png";
 import Hangout3 from "../public/assets/images/hangout3.png";
 import InboxIcon from "../public/assets/images/Icons/inbox.png";
-import SOSIcon from "../public/assets/images/sos.png";
 import Image from "next/image";
-import SwipeButton from "@/components/swipeButton";
+
 import Layout from "@/components/layout";
 import { Hangout2, Hangout4 } from "@/public/assets/images";
+
+import SendMsg from "./sendMsg";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Home = () => {
   const router = useRouter();
@@ -19,19 +21,29 @@ const Home = () => {
     setIsSosModalOpen(!isSosModalOpen);
   };
 
+  const handleSendSOSMessage = async () => {
+    try {
+      await SendMsg(); // Call SendMsg as a function and await its completion
+      console.log("SOS message sent successfully");
+    } catch (error) {
+      console.error("Error sending SOS message:", error);
+    }
+  };
+
   return (
     <Layout>
       <div className="bg-white min-h-screen flex flex-col ">
         <div className="pt-9 px-4 flex justify-between items-center mt-8">
-          <h1 className="text-[#121418] font-semibold text-base ">
+          {/* <h1 className="text-[#121418] font-semibold text-base ">
             Gm, Joy Mun
-          </h1>
-          <div className="flex flex-row space-x-3">
+          </h1> */}
+          <ConnectButton />
+          <div className="flex flex-row space-x-1">
             <button onClick={() => router.push("/acceptRequest")}>
               <Image src={InboxIcon} className="w-12 h-12 mr-1" alt="Inbox" />
             </button>
             <button onClick={handleSosRequestModal}>
-              <div className="w-12 h-12 ml-3 bg-[#FF5757] rounded-2xl flex justify-center items-center">
+              <div className="w-12 h-12 ml-1 bg-[#FF5757] rounded-2xl flex justify-center items-center">
                 <span className="text-white font-bold">SOS</span>
               </div>
             </button>
@@ -45,7 +57,7 @@ const Home = () => {
             <h2 className="text-[#121418] font-medium text-lg">
               Explore Your Neighborhood
             </h2>
-            <button onClick={() => router.push("/Map")}>
+            <button onClick={() => router.push("/map")}>
               <Image
                 src={MapImage}
                 className="w-full h-40 rounded-lg"
@@ -62,7 +74,7 @@ const Home = () => {
                 {[Hangout1, Hangout4].map((image, index) => (
                   <button
                     key={index}
-                    onClick={() => router.push("/Hangout")}
+                    onClick={() => router.push("/hangout")}
                     className="w-[95%] h-20"
                   >
                     <Image
@@ -104,7 +116,7 @@ const Home = () => {
               information or updates to the Buddy Guard Group once they arrive
             </p>
             <button
-              onClick={() => router.push("/home")}
+              onClick={handleSendSOSMessage}
               className="bg-red-500 text-white py-3 px-6 rounded-lg mt-4 w-full"
             >
               Send SOS Message Now
