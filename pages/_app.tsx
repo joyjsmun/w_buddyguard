@@ -16,7 +16,7 @@ import {
   ledgerWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { WagmiProvider } from "wagmi";
-import { arbitrum, arbitrumSepolia, mainnet, sepolia } from "wagmi/chains";
+import { arbitrum, arbitrumGoerli, mainnet, sepolia } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const { wallets } = getDefaultWallets();
@@ -34,7 +34,7 @@ const config = getDefaultConfig({
   chains: [
     mainnet,
     arbitrum,
-    arbitrumSepolia,
+    arbitrumGoerli,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [sepolia] : []),
   ],
   ssr: true,
