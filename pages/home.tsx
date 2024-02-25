@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Modal from "../components/modal";
 import MapImage from "../public/assets/images/map_example.png";
-import Hangout1 from "../public/assets/images/hangout1.png";
-import Hangout3 from "../public/assets/images/hangout3.png";
+
 import InboxIcon from "../public/assets/images/Icons/inbox.png";
 import Image from "next/image";
 
 import Layout from "@/components/layout";
-import { Hangout2, Hangout4 } from "@/public/assets/images";
+import { Hangout1, Hangout4 } from "@/public/assets/images";
 
-import SendMsg from "./sendMsg";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useWalletClient } from "wagmi";
+import { PushAPI } from "@pushprotocol/restapi";
 
 const Home = () => {
   const router = useRouter();
@@ -21,9 +21,23 @@ const Home = () => {
     setIsSosModalOpen(!isSosModalOpen);
   };
 
-  const handleSendSOSMessage = async () => {
+  const { data: signer } = useWalletClient();
+
+  const handleSendMessage = async (signer) => {
+    // Initialize wallet user, pass 'prod' instead of 'staging' for mainnet apps
+    const userAlice = await PushAPI.initialize(signer, { env: "staging" });
+
+    const messageContent = `Emergency Situation\nSOS User: Joe\nSOS Location Link: 1212st, Barcelona, Spain\nPersonal Contact Number: 987-232-1829`;
+
+    // Send a message to Bob
+    await userAlice.chat.send("0x7C81461eE3EfEc10CC6BB3A3DbBA3CCA9B0EF127", {
+      content: messageContent,
+    });
+  };
+
+  const handleSendSOSMessage = async (signer) => {
     try {
-      await SendMsg(); // Call SendMsg as a function and await its completion
+      await handleSendMessage(signer); // Call handleSendMessage function
       console.log("SOS message sent successfully");
     } catch (error) {
       console.error("Error sending SOS message:", error);
@@ -34,9 +48,6 @@ const Home = () => {
     <Layout>
       <div className="bg-white min-h-screen flex flex-col ">
         <div className="pt-9 px-4 flex justify-between items-center mt-8">
-          {/* <h1 className="text-[#121418] font-semibold text-base ">
-            Gm, Joy Mun
-          </h1> */}
           <ConnectButton />
           <div className="flex flex-row space-x-1">
             <button onClick={() => router.push("/acceptRequest")}>
@@ -116,7 +127,7 @@ const Home = () => {
               information or updates to the Buddy Guard Group once they arrive
             </p>
             <button
-              onClick={handleSendSOSMessage}
+              onClick={() => handleSendSOSMessage(signer)}
               className="bg-red-500 text-white py-3 px-6 rounded-lg mt-4 w-full"
             >
               Send SOS Message Now
