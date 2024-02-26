@@ -81,12 +81,12 @@ const Map = () => {
             onLoad={onLoad}
             onUnmount={onUnmount}
           >
-            {/* {locations.map((location, index) => (
+            {locations.map((location, index) => (
               <MarkerF
                 key={index}
                 position={{ lat: location.latitude, lng: location.longitude }}
               />
-            ))} */}
+            ))}
           </GoogleMap>
         ) : (
           <div>Loading failed</div>
