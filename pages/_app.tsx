@@ -28,6 +28,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ThirdwebProvider
+      authConfig={{
+        domain: process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN || "",
+      }}
       activeChain={ArbitrumGoerli}
       clientId="833996b2d080980da3975eb07563f830"
     >

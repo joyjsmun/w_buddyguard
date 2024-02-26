@@ -10,6 +10,7 @@ import {
 // import { useAccount } from "wagmi";
 import Modal from "@/components/modal";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
+import Login from "./loginThirdweb";
 
 const OnBoarding = () => {
   const router = useRouter();
@@ -109,7 +110,7 @@ const OnBoarding = () => {
         </button>
         {!address && currentSlideIndex === slides.length - 1 && (
           <Modal onClickToggleModal={handleWalletConnectModal}>
-            <ConnectWallet />;
+            <Login />
           </Modal>
         )}
       </div>

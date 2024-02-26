@@ -11,7 +11,7 @@ const LandingPage = () => {
   const isLandingPage = router.pathname === "/";
 
   const handleButtonClick = () => {
-    router.push("/onBoarding");
+    router.push("/loginThirdweb");
   };
 
   return (
