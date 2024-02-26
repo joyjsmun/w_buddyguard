@@ -8,10 +8,9 @@ import Image from "next/image";
 
 import Layout from "@/components/layout";
 import { Hangout1, Hangout4 } from "@/public/assets/images";
-import { ConnectWallet, useSigner } from "@thirdweb-dev/react";
 
-// import { ConnectButton } from "@rainbow-me/rainbowkit";
-// import { useWalletClient } from "wagmi";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useWalletClient } from "wagmi";
 import { PushAPI } from "@pushprotocol/restapi";
 
 const Home = () => {
@@ -22,7 +21,7 @@ const Home = () => {
     setIsSosModalOpen(!isSosModalOpen);
   };
 
-  const signer = useSigner();
+  const { data: signer } = useWalletClient();
 
   const handleSendMessage = async (signer) => {
     // Initialize wallet user, pass 'prod' instead of 'staging' for mainnet apps
@@ -49,7 +48,7 @@ const Home = () => {
     <Layout>
       <div className="bg-white min-h-screen flex flex-col ">
         <div className="pt-9 px-4 flex justify-between items-center mt-8">
-          <ConnectWallet />
+          <ConnectButton />
           <div className="flex flex-row space-x-1">
             <button onClick={() => router.push("/acceptRequest")}>
               <Image src={InboxIcon} className="w-12 h-12 mr-1" alt="Inbox" />

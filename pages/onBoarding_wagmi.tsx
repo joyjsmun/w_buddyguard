@@ -7,13 +7,13 @@ import {
   safety,
   trust,
 } from "../public/assets/images";
-// import { useAccount } from "wagmi";
+import { useAccount } from "wagmi";
 import Modal from "@/components/modal";
-import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const OnBoarding = () => {
   const router = useRouter();
-  const address = useAddress();
+  const { address } = useAccount(); // Use useRainbow hook to get wallet information
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
 
@@ -109,7 +109,7 @@ const OnBoarding = () => {
         </button>
         {!address && currentSlideIndex === slides.length - 1 && (
           <Modal onClickToggleModal={handleWalletConnectModal}>
-            <ConnectWallet />;
+            <ConnectButton />
           </Modal>
         )}
       </div>
