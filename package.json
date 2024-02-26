@@ -12,6 +12,7 @@
     "@pushprotocol/restapi": "^1.6.8",
     "@pushprotocol/socket": "^0.5.3",
     "@rainbow-me/rainbowkit": "^2.0.1",
+    "@react-google-maps/api": "^2.19.3",
     "@tanstack/react-query": "^5.24.1",
     "ethers": "^5.7.2",
     "init": "^0.1.2",
