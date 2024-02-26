@@ -2,8 +2,9 @@ import { useCallback, useState } from "react";
 import {
   GoogleMap,
   Marker,
-  MarkerF,
+  InfoWindow,
   useJsApiLoader,
+  MarkerF,
 } from "@react-google-maps/api";
 import Layout from "@/components/layout";
 
@@ -53,6 +54,7 @@ const Map = () => {
   });
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [selectedMarker, setSelectedMarker] = useState<any>(null);
 
   const onLoad = useCallback(function callback(map: any) {
     const bounds = new window.google.maps.LatLngBounds();
@@ -65,6 +67,10 @@ const Map = () => {
 
     setMap(map);
   }, []);
+
+  const onMarkerClick = (marker: any) => {
+    setSelectedMarker(marker);
+  };
 
   const onUnmount = useCallback(function callback() {
     setMap(null);
@@ -85,8 +91,20 @@ const Map = () => {
               <MarkerF
                 key={index}
                 position={{ lat: location.latitude, lng: location.longitude }}
+                onClick={() => onMarkerClick(location)}
               />
             ))}
+            {selectedMarker && (
+              <InfoWindow
+                position={{
+                  lat: selectedMarker.latitude,
+                  lng: selectedMarker.longitude,
+                }}
+                // onCloseClick={() => setSelectedMarker(null)}
+              >
+                <div>{selectedMarker.place}</div>
+              </InfoWindow>
+            )}
           </GoogleMap>
         ) : (
           <div>Loading failed</div>
