@@ -43,11 +43,12 @@ const WalkStatus = () => {
         const userRef = doc(db, "users", user.uid);
         await updateDoc(userRef, {
           totalRewards: increment(5000),
-          totalReputation: increment(1), // Increment reputation by 1
+          totalReputation: increment(100), // Increment reputation by 1
         });
         // Get the updated totalRewards from the user document
         const userSnapshot = await getDoc(userRef);
         const totalRewards = userSnapshot.data().totalRewards;
+        const totalReputation = userSnapshot.data().totalReputation;
 
         // Get the last orderNumber
         const recordsRef = collection(db, `users/${user.uid}/rewardRecords`);
@@ -60,9 +61,10 @@ const WalkStatus = () => {
         // Add record to the user's reward_records subcollection
         await addDoc(recordsRef, {
           orderNumber: increment(lastOrderNumber + 1), // Increment from the last orderNumber
-          type: "rewards",
+          type: "Buddy Guard Service Reward",
           rewardAmount: 5000, // Assuming you're rewarding 10 tokens
           totalRewards: totalRewards,
+          totalReputation: totalReputation,
           rewardReceivedAt: serverTimestamp(),
         });
 

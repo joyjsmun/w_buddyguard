@@ -1,4 +1,9 @@
-import React, { useCallback, useLayoutEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Modal from "../components/modal";
@@ -9,14 +14,77 @@ import {
   group2,
   lock,
   coin,
+  reputationImg,
 } from "../public/assets/images";
+
 import Layout from "@/components/layout";
+
+import initializeFirebaseClient from "../lib/initFirebase";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 
 const Profile = () => {
   const router = useRouter();
   const [isOpenBarcodeModal, setOpenBarcodeModal] = useState(false);
   const [isOpenPersonalInfoModal, setOpenPersonalInfoModal] = useState(false);
   const [isPersonalInfoSaved, setPersonalInfoSaved] = useState(false);
+  const [isRewardsInfoModal, setIsRewardsInfoModal] = useState(false);
+  const [rewards, setRewards] = useState(0); // State to store total rewards score
+  const [reputation, setReputation] = useState(0); // State to store total reputation score
+  const [rewardRecords, setRewardRecords] = useState([]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const { auth, db } = initializeFirebaseClient();
+        const user = auth.currentUser;
+        if (user) {
+          const userRef = doc(db, "users", user.uid);
+          const userSnapshot = await getDoc(userRef);
+          const userData = userSnapshot.data();
+          console.log("userData:", userData); // Add this logging statement
+          if (userData) {
+            setRewards(userData.totalRewards || 0);
+            setReputation(userData.totalReputation || 0);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    const fetchRewardRecords = async () => {
+      try {
+        const { db, auth } = initializeFirebaseClient();
+        const user = auth.currentUser;
+
+        if (user) {
+          const recordsRef = collection(db, `users/${user.uid}/rewardRecords`);
+          const querySnapshot = await getDocs(
+            query(recordsRef, orderBy("rewardReceivedAt", "desc"))
+          );
+          const recordsData = querySnapshot.docs.map((doc) => doc.data());
+          setRewardRecords(recordsData);
+        }
+      } catch (error) {
+        console.error("Error fetching reward records:", error);
+      }
+    };
+
+    if (isRewardsInfoModal) {
+      fetchRewardRecords();
+    }
+  }, [isRewardsInfoModal]);
 
   const onClickToggleBarcodeModal = useCallback(() => {
     setOpenBarcodeModal(!isOpenBarcodeModal);
@@ -25,6 +93,10 @@ const Profile = () => {
   const onClickTogglePersonalInfoModal = useCallback(() => {
     setOpenPersonalInfoModal(!isOpenPersonalInfoModal);
   }, [isOpenPersonalInfoModal]);
+
+  const onClickToggleRewardsInfoModal = useCallback(() => {
+    setIsRewardsInfoModal(!isRewardsInfoModal);
+  }, [isRewardsInfoModal]);
 
   const onSaveAndEncrypt = useCallback(() => {
     setPersonalInfoSaved(true);
@@ -77,7 +149,7 @@ const Profile = () => {
                   <Image src={group2} className="w-11 h-11" alt="Group" />
                   <p className="font-medium text-base">Team Buddy Guard</p>
                 </div>
-                <button className="rounded-2xl bg-green-500 w-16 h-16 flex justify-center items-center">
+                <button className="rounded-2xl bg-blue-500 w-16 h-16 flex justify-center items-center">
                   <p className="font-medium text-white">Edit</p>
                 </button>
               </div>
@@ -94,7 +166,7 @@ const Profile = () => {
                 </div>
                 <button
                   onClick={onClickTogglePersonalInfoModal}
-                  className="rounded-2xl w-16 h-16 flex justify-center items-center bg-green-500"
+                  className="rounded-2xl w-16 h-16 flex justify-center items-center bg-blue-500"
                 >
                   <p className="font-medium text-white">Add</p>
                 </button>
@@ -137,24 +209,88 @@ const Profile = () => {
             </div>
             {/* Reward Info */}
             <div>
-              <p className="font-bold mb-1">Reward & Reputation Info</p>
+              <div
+                className="flex flex-row justify-between items-center mb-4 space-x-6
+              "
+              >
+                <p className="font-bold mb-1">Rewards & Reputation</p>
+                <button
+                  onClick={onClickToggleRewardsInfoModal}
+                  className="rounded-xl bg-blue-500 w-full h-12 flex justify-center items-center"
+                >
+                  <p className="font-medium text-white">Show Records</p>
+                </button>
+              </div>
+              <div className="flex flex-row justify-between space-x-2 ">
+                <div className="flex space-x-2">
+                  <div className="flex flex-row pl-2  justify-between items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[100%] h-16 px-2">
+                    <Image src={coin} className="w-12 h-12" alt="Coin" />
+                    <p className="font-bold text-base text-center">
+                      {rewards} BG Token
+                    </p>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <div className="flex flex-row pl-2  justify-between items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[100%] h-16 px-2">
+                    <Image
+                      src={reputationImg}
+                      className="w-12 h-12"
+                      alt="Coin"
+                    />
+                    <p className="font-bold text-base pr-4 text-center ">
+                      {reputation} High
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Rewards Information Modal */}
+            {isRewardsInfoModal && (
+              <Modal onClickToggleModal={onClickToggleRewardsInfoModal}>
+                <p className="font-bold text-lg pb-2 w-full">
+                  Your Buddy Guard Rewards
+                </p>
+                <div>
+                  {/* list of records */}
+                  {rewardRecords.map((record, index) => (
+                    <div key={index} className="border-b-2 pb-2 mb-2">
+                      <p className="font-bold"># {record.orderNumber}</p>
+                      <p>Type: {record.type}</p>
+                      <p>
+                        Date:{" "}
+                        {record.rewardReceivedAt.toDate().toLocaleString()}
+                      </p>
+
+                      <p>Reward Amount: {record.rewardAmount}</p>
+                      <p>Total Repuation: {record.totalReputation}</p>
+                      <p>Total Rewards: {record.totalRewards}</p>
+                    </div>
+                  ))}
+                </div>
+                {/* Save button */}
+              </Modal>
+            )}
+            {/* Reputation Score
+            <div>
+              <p className="font-bold mb-1">Reputation Info</p>
               <div className="flex space-x-2">
                 <div className="flex flex-row pl-4 pr-10 justify-between items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
                   <Image src={coin} className="w-12 h-12" alt="Coin" />
                   <p className="font-medium text-base">188 BG Token</p>
                 </div>
-                <button className="rounded-2xl bg-green-500 w-16 h-16 flex justify-center items-center">
+                <button className="rounded-2xl bg-blue-500 w-16 h-16 flex justify-center items-center">
                   <p className="font-medium text-white">Show</p>
                 </button>
               </div>
-            </div>
+            </div> */}
+
             {/* Social Graph */}
-            <div>
+            {/* <div>
               <p className="font-bold mb-1">Social Graph</p>
               <div className="flex space-x-2">
                 <div className="rounded-xl bg-[#F2F2F2] w-full h-40 flex justify-center items-center"></div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -64,6 +64,7 @@ export { default as talk } from "./Icons/talk.png";
 
 export { default as live } from "./Icons/live.png";
 export { default as timer } from "./Icons/timer.png";
+export { default as reputationImg } from "./Icons/reputationImg.png";
 
 export { default as yes } from "./Icons/yes.png";
 export { default as no } from "./Icons/no.png";
