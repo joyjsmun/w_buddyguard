@@ -33,6 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
       }}
       activeChain={ArbitrumGoerli}
       clientId="833996b2d080980da3975eb07563f830"
+      //supportedWallets={[embeddedWallet()]}
     >
       <Component {...pageProps} />
     </ThirdwebProvider>

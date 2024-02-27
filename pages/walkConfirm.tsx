@@ -1,66 +1,66 @@
 import React, { useState } from "react";
 
 import { Map, LogoImage, Avatar1, Avatar2 } from "../public/assets/images";
-// import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Layout from "@/components/layout";
+import { ethers } from "ethers";
 
 const WalkConfirm = () => {
   const router = useRouter();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
-  //   const handleContractInteraction = async () => {
-  //     const contractAddress = "0x4EeFA835A807c36DD0a643A7D97cD6E2b8Ca29c2";
-  //     const tokenAddress = "0xD21341536c5cF5EB1bcb58f6723cE26e8D8E90e4";
-  //     const guardians = ["0xE1e5E0b3830454d68aE7B8926540a8AC0FdcabC0"];
-  //     const payment = ethers.utils.parseUnits("100", 1);
+  // const handleContractInteraction = async () => {
+  //   const contractAddress = "0x4EeFA835A807c36DD0a643A7D97cD6E2b8Ca29c2";
+  //   const tokenAddress = "0xD21341536c5cF5EB1bcb58f6723cE26e8D8E90e4";
+  //   const guardians = ["0xE1e5E0b3830454d68aE7B8926540a8AC0FdcabC0"];
+  //   const payment = ethers.utils.parseUnits("100", 1);
 
-  //     const provider = new ethers.providers.JsonRpcProvider(
-  //       "https://avalanche-fuji.infura.io/v3/06105ced913047cc9dfb22a446cd008e"
+  //   const provider = new ethers.providers.JsonRpcProvider(
+  //     "https://avalanche-fuji.infura.io/v3/06105ced913047cc9dfb22a446cd008e"
+  //   );
+
+  //   const wallet = new ethers.Wallet(
+  //     "21ecce1087ee67a64fbce1435c25eb7feceacca5ae68a340be4002211455c1a6",
+  //     provider
+  //   );
+
+  //   const buddyGuardAbi = [
+  //     "function createOrder(address _token, address[] calldata _guardians, uint256 _payment) external",
+  //   ];
+
+  //   const buddyGuardContract = new ethers.Contract(
+  //     contractAddress,
+  //     buddyGuardAbi,
+  //     wallet
+  //   );
+
+  //   console.log(`Creating order with payment: ${payment.toString()} tokens...`);
+
+  //   try {
+  //     console.log(
+  //       `Creating order with payment: ${payment.toString()} tokens...`
   //     );
 
-  //     const wallet = new ethers.Wallet(
-  //       "21ecce1087ee67a64fbce1435c25eb7feceacca5ae68a340be4002211455c1a6",
-  //       provider
-  //     );
-
-  //     const buddyGuardAbi = [
-  //       "function createOrder(address _token, address[] calldata _guardians, uint256 _payment) external",
+  //     const tokenAbi = [
+  //       "function approve(address spender, uint256 amount) external returns (bool)",
   //     ];
 
-  //     const buddyGuardContract = new ethers.Contract(
-  //       contractAddress,
-  //       buddyGuardAbi,
-  //       wallet
+  //     const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, wallet);
+  //     await tokenContract.approve(contractAddress, payment);
+
+  //     const tx = await buddyGuardContract.createOrder(
+  //       tokenAddress,
+  //       guardians,
+  //       payment
   //     );
+  //     await tx.wait();
 
-  //     console.log(`Creating order with payment: ${payment.toString()} tokens...`);
-
-  //     try {
-  //       console.log(
-  //         `Creating order with payment: ${payment.toString()} tokens...`
-  //       );
-
-  //       const tokenAbi = [
-  //         "function approve(address spender, uint256 amount) external returns (bool)",
-  //       ];
-
-  //       const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, wallet);
-  //       await tokenContract.approve(contractAddress, payment);
-
-  //       const tx = await buddyGuardContract.createOrder(
-  //         tokenAddress,
-  //         guardians,
-  //         payment
-  //       );
-  //       await tx.wait();
-
-  //       console.log(`Order created successfully. Transaction hash: ${tx.hash}`);
-  //     } catch (error) {
-  //       console.error("Failed to create order:", error);
-  //     }
-  //   };
+  //     console.log(`Order created successfully. Transaction hash: ${tx.hash}`);
+  //   } catch (error) {
+  //     console.error("Failed to create order:", error);
+  //   }
+  // };
 
   return (
     <Layout>

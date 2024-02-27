@@ -38,7 +38,26 @@ export default function Login() {
 
       if (!userDoc.exists()) {
         // User now has permission to update their own document outlined in the Firestore rules.
-        setDoc(usersRef, { createdAt: serverTimestamp() }, { merge: true });
+        // Add necessary columns for the new user with empty values
+        setDoc(
+          usersRef,
+          {
+            createdAt: serverTimestamp(),
+            group: "",
+            totalRewards: 0,
+            totalReputation: 0, // Initial reputation score
+            personalInfo: "", // Optional: profile page
+          },
+          { merge: true }
+        );
+        // update a "records" collection for the user
+        const recordsRef = doc(db, "reward_records", user.uid);
+        await setDoc(recordsRef, {
+          rewardReceivedAt: "",
+          type: "rewards",
+          rewardAmount: "",
+          totalRewards: "",
+        });
       }
     } catch (error) {
       console.error(error);

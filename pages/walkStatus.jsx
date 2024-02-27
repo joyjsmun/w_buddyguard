@@ -13,16 +13,72 @@ import {
 import Modal from "../components/modal";
 import Layout from "@/components/layout";
 
+import {
+  doc,
+  addDoc,
+  getDoc,
+  updateDoc,
+  increment,
+  collection,
+  serverTimestamp,
+} from "firebase/firestore";
+import { useAuth } from "@thirdweb-dev/react";
+import initializeFirebaseClient from "../lib/initFirebase";
+
 const WalkStatus = () => {
   const router = useRouter();
   const [isSosModal, setIsSosModal] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push("/safetyTimer");
-    }, 7000);
-    return () => clearTimeout(timer);
-  }, [router]);
+  const handleArrive = async () => {
+    try {
+      const { auth, db } = initializeFirebaseClient();
+
+      // Get the current user
+      const user = auth.currentUser;
+
+      if (user) {
+        // Update user document in Firestore
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, {
+          totalRewards: increment(10),
+          totalReputation: increment(1), // Increment reputation by 1
+        });
+        // Get the updated totalRewards from the user document
+        const userSnapshot = await getDoc(userRef);
+        const totalRewards = userSnapshot.data().totalRewards;
+
+        // Add record to the user's reward_records subcollection
+        const recordsRef = collection(db, `users/${user.uid}/reward_records`);
+        await addDoc(recordsRef, {
+          rewardReceivedAt: serverTimestamp(),
+          type: "rewards",
+          rewardAmount: 10, // Assuming you're rewarding 10 tokens
+          totalRewards: totalRewards,
+        });
+
+        console.log("Successfully updated user data and added record.");
+        // Navigate to home page after successful update
+        router.push("/home");
+      } else {
+        console.error("User not found.");
+        // Display an error message to the user, indicating that they need to sign in first
+        // For example:
+        // setError("User not found. Please sign in first.");
+      }
+    } catch (error) {
+      console.error("Error updating user data:", error);
+      // You can handle errors here, such as displaying an error message to the user
+      // For example:
+      // setError("Error updating user data. Please try again later.");
+    }
+  };
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     router.push("/safetyTimer");
+  //   }, 7000);
+  //   return () => clearTimeout(timer);
+  // }, [router]);
 
   return (
     <Layout>
@@ -128,7 +184,10 @@ const WalkStatus = () => {
                 Send SOS
               </button>
               <button
-                onClick={() => router.push("/home")}
+                onClick={async () => {
+                  await handleArrive();
+                  router.push("/home");
+                }}
                 className="bg-[#4F9171] text-white font-bold py-3 w-full rounded-lg"
               >
                 Arrived
