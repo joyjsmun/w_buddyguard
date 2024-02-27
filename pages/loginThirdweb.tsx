@@ -47,17 +47,11 @@ export default function Login() {
             totalRewards: 0,
             totalReputation: 0, // Initial reputation score
             personalInfo: "", // Optional: profile page
+            verified: false,
+            waltIdcertification: "",
           },
           { merge: true }
         );
-        // update a "records" collection for the user
-        const recordsRef = doc(db, "reward_records", user.uid);
-        await setDoc(recordsRef, {
-          rewardReceivedAt: "",
-          type: "rewards",
-          rewardAmount: "",
-          totalRewards: "",
-        });
       }
     } catch (error) {
       console.error(error);

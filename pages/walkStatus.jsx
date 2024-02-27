@@ -15,8 +15,10 @@ import Layout from "@/components/layout";
 
 import {
   doc,
+  query,
   addDoc,
   getDoc,
+  getDocs,
   updateDoc,
   increment,
   collection,
@@ -40,20 +42,28 @@ const WalkStatus = () => {
         // Update user document in Firestore
         const userRef = doc(db, "users", user.uid);
         await updateDoc(userRef, {
-          totalRewards: increment(10),
+          totalRewards: increment(5000),
           totalReputation: increment(1), // Increment reputation by 1
         });
         // Get the updated totalRewards from the user document
         const userSnapshot = await getDoc(userRef);
         const totalRewards = userSnapshot.data().totalRewards;
 
+        // Get the last orderNumber
+        const recordsRef = collection(db, `users/${user.uid}/rewardRecords`);
+        const querySnapshot = await getDocs(
+          query(collection(db, `users/${user.uid}/rewardRecords`))
+        );
+        const lastRecord = querySnapshot.docs[querySnapshot.docs.length - 1];
+        const lastOrderNumber = lastRecord ? lastRecord.data().orderNumber : 0;
+
         // Add record to the user's reward_records subcollection
-        const recordsRef = collection(db, `users/${user.uid}/reward_records`);
         await addDoc(recordsRef, {
-          rewardReceivedAt: serverTimestamp(),
+          orderNumber: increment(lastOrderNumber + 1), // Increment from the last orderNumber
           type: "rewards",
-          rewardAmount: 10, // Assuming you're rewarding 10 tokens
+          rewardAmount: 5000, // Assuming you're rewarding 10 tokens
           totalRewards: totalRewards,
+          rewardReceivedAt: serverTimestamp(),
         });
 
         console.log("Successfully updated user data and added record.");
@@ -186,7 +196,7 @@ const WalkStatus = () => {
               <button
                 onClick={async () => {
                   await handleArrive();
-                  router.push("/home");
+                  //router.push("/home");
                 }}
                 className="bg-[#4F9171] text-white font-bold py-3 w-full rounded-lg"
               >
