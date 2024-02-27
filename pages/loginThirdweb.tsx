@@ -43,12 +43,13 @@ export default function Login() {
           usersRef,
           {
             createdAt: serverTimestamp(),
-            group: "",
+            groupName: "Team Buddy Guard",
+            groupContractAddress: "",
             totalRewards: 0,
             totalReputation: 0, // Initial reputation score
             personalInfo: "", // Optional: profile page
             verified: false,
-            waltIdcertification: "",
+            waltIdCertification: "",
           },
           { merge: true }
         );

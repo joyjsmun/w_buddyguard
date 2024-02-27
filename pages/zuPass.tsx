@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function ZuPass() {
   return (
-    <div className="h-56 w-full p-2 border-2 border-blue-500 rounded-lg">
+    <div className="h-56 w-full p-2 border-2 border-blue-500 rounded-lg ">
       <p className="font-bold">Choose Your Zuzalu Pass Event</p>
       <div className="flex flex-col justify-between items-center">
         <button className="rounded-md w-60 h-12 px-4 flex items-start justify-center">

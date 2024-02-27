@@ -15,6 +15,14 @@ import {
   lock,
   coin,
   reputationImg,
+  poap1,
+  poap2,
+  poap3,
+  poap4,
+  nft1,
+  nft2,
+  nft3,
+  nft4,
 } from "../public/assets/images";
 
 import Layout from "@/components/layout";
@@ -27,6 +35,7 @@ import {
   getDocs,
   orderBy,
   query,
+  updateDoc,
 } from "firebase/firestore";
 
 const Profile = () => {
@@ -35,9 +44,18 @@ const Profile = () => {
   const [isOpenPersonalInfoModal, setOpenPersonalInfoModal] = useState(false);
   const [isPersonalInfoSaved, setPersonalInfoSaved] = useState(false);
   const [isRewardsInfoModal, setIsRewardsInfoModal] = useState(false);
+  const [isGroupInfoModal, setIsGroupInfoModal] = useState(false);
   const [rewards, setRewards] = useState(0); // State to store total rewards score
   const [reputation, setReputation] = useState(0); // State to store total reputation score
   const [rewardRecords, setRewardRecords] = useState([]);
+  const [groupContractAddress, setGroupContractAddress] = useState(""); // State to store group contract address
+  const [groupInfo, setGroupInfo] = useState({
+    groupName: "",
+    groupContractAddress: "",
+  });
+
+  const randomPOAPAddress = "0x1234567890123456789012345678901234567890"; // Example POAP contract address
+  const randomNFTAddress = "0x0987654321098765432109876543210987654321"; // Example NFT contract address
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -86,6 +104,57 @@ const Profile = () => {
     }
   }, [isRewardsInfoModal]);
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const { auth, db } = initializeFirebaseClient();
+        const user = auth.currentUser;
+        if (user) {
+          const userRef = doc(db, "users", user.uid);
+          const userSnapshot = await getDoc(userRef);
+          const userData = userSnapshot.data();
+          if (userData) {
+            setGroupInfo({
+              groupName: userData.groupName || "",
+              groupContractAddress: userData.groupContractAddress || "",
+            });
+            setGroupContractAddress(userData.groupContractAddress || "");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const saveGroupInfoToFirebase = useCallback(async () => {
+    try {
+      const { auth, db } = initializeFirebaseClient();
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        // Update the user document with the new group name
+        await updateDoc(userRef, {
+          groupName: groupInfo.groupName,
+          groupContractAddress: groupContractAddress,
+        });
+        setIsGroupInfoModal(false); // Close the modal after saving
+      }
+    } catch (error) {
+      console.error("Error saving group info:", error);
+    }
+  }, [groupInfo, groupContractAddress]);
+
+  const handleInputChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setGroupInfo((prevGroupInfo) => ({
+      ...prevGroupInfo,
+      [name]: value,
+    }));
+  }, []);
+
   const onClickToggleBarcodeModal = useCallback(() => {
     setOpenBarcodeModal(!isOpenBarcodeModal);
   }, [isOpenBarcodeModal]);
@@ -98,10 +167,23 @@ const Profile = () => {
     setIsRewardsInfoModal(!isRewardsInfoModal);
   }, [isRewardsInfoModal]);
 
+  const onClickToggleGroupInfoModal = useCallback(() => {
+    setIsGroupInfoModal(!isGroupInfoModal);
+  }, [isGroupInfoModal]);
+
   const onSaveAndEncrypt = useCallback(() => {
     setPersonalInfoSaved(true);
     setOpenPersonalInfoModal(false);
   }, []);
+
+  // Group Creation
+  const handlePOAPClick = () => {
+    setGroupContractAddress(randomPOAPAddress);
+  };
+
+  const handleNFTClick = () => {
+    setGroupContractAddress(randomNFTAddress);
+  };
 
   return (
     <Layout>
@@ -140,20 +222,165 @@ const Profile = () => {
             </div>
           </div>
           {/* Info Section */}
-          <div className="space-y-5">
+          <div className="space-y-10">
             {/* Group Info */}
             <div>
               <p className="font-bold mb-1">Group Info</p>
               <div className="flex space-x-2">
                 <div className="flex flex-row pl-5 justify-start items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
                   <Image src={group2} className="w-11 h-11" alt="Group" />
-                  <p className="font-medium text-base">Team Buddy Guard</p>
+                  {/* default - Team Buddy Guard*/}
+                  <p className="font-medium text-base">
+                    {groupInfo.groupName || "Team Buddy Guard"}
+                  </p>
                 </div>
-                <button className="rounded-2xl bg-blue-500 w-16 h-16 flex justify-center items-center">
+                <button
+                  onClick={onClickToggleGroupInfoModal}
+                  className="rounded-2xl bg-blue-500 w-16 h-16 flex justify-center items-center"
+                >
                   <p className="font-medium text-white">Edit</p>
                 </button>
+                {/* Group Info Modal */}
+
+                {isGroupInfoModal && (
+                  <Modal onClickToggleModal={onClickToggleGroupInfoModal}>
+                    {/* Save button */}
+                    <div className="h-auto w-full p-2 border-2 border-[#1B75BC] rounded-lg">
+                      <div className="flex flex-col">
+                        <span className="font-bold mb-4">
+                          Choose Your Group Name
+                        </span>
+                        <input
+                          name="groupName"
+                          placeholder="Your Group Name"
+                          value={groupInfo.groupName}
+                          onChange={handleInputChange}
+                          className="p-4 border-2 border-[#1B75BC] rounded-lg mb-2"
+                        />
+                        <span className="font-bold mb-4">
+                          Group Contract Address
+                        </span>
+                        <input
+                          name="groupContractAddress"
+                          value={groupInfo.groupContractAddress}
+                          onChange={handleInputChange}
+                          placeholder={groupContractAddress || "0x..."}
+                          className="p-4 border-2 border-[#1B75BC] rounded-lg"
+                        />
+                        {/* POAP list */}
+
+                        <span className="font-bold my-4">
+                          Choose POAP Group
+                        </span>
+                        <div className="flex flex-row justify-between">
+                          {/* Example POAP buttons */}
+                          <button
+                            onClick={handlePOAPClick}
+                            className="rounded-full w-16 h-16 border-2 border-gray-400 flex justify-center items-center"
+                          >
+                            <Image
+                              src={poap1}
+                              className="w-14 h-14"
+                              alt="poap1"
+                            />
+                          </button>
+                          <button
+                            onClick={handlePOAPClick}
+                            className="rounded-full w-16 h-16 border-2 border-gray-400 flex justify-center items-center"
+                          >
+                            <Image
+                              src={poap2}
+                              className="w-14 h-14"
+                              alt="poap1"
+                            />
+                          </button>
+                          <button
+                            onClick={handlePOAPClick}
+                            className="rounded-full w-16 h-16 border-2 border-gray-400 flex justify-center items-center"
+                          >
+                            <Image
+                              src={poap3}
+                              className="w-14 h-14"
+                              alt="poap1"
+                            />
+                          </button>
+                          <button
+                            onClick={handlePOAPClick}
+                            className="rounded-full w-16 h-16 border-2 border-gray-400 flex justify-center items-center"
+                          >
+                            <Image
+                              src={poap4}
+                              className="w-14 h-14"
+                              alt="poap1"
+                            />
+                          </button>
+                          {/* Add more POAP buttons as needed */}
+                        </div>
+                        {/* NFT list */}
+                        <div>
+                          <p className="font-bold my-4">
+                            Choose NFT Collection Group
+                          </p>
+                          <div className="flex flex-row justify-between">
+                            {/* Example NFT buttons */}
+                            <button
+                              onClick={handleNFTClick}
+                              className="rounded-md w-16 h-16 border-2 border-gray-400 flex justify-center items-center"
+                            >
+                              <Image
+                                src={nft1}
+                                className="w-14 h-14"
+                                alt="nft1"
+                              />
+                            </button>
+                            <button
+                              onClick={handleNFTClick}
+                              className="rounded-md w-16 h-16 border-2 border-gray-400 flex justify-center items-center"
+                            >
+                              <Image
+                                src={nft2}
+                                className="w-14 h-14"
+                                alt="nft1"
+                              />
+                            </button>
+                            <button
+                              onClick={handleNFTClick}
+                              className="rounded-md w-16 h-16 border-2 border-gray-400 flex justify-center items-center"
+                            >
+                              <Image
+                                src={nft3}
+                                className="w-14 h-14"
+                                alt="nft1"
+                              />
+                            </button>
+                            <button
+                              onClick={handleNFTClick}
+                              className="rounded-md w-16 h-16 border-2 border-gray-400 flex justify-center items-center"
+                            >
+                              <Image
+                                src={nft4}
+                                className="w-14 h-14"
+                                alt="nft1"
+                              />
+                            </button>
+                            {/* Add more NFT buttons as needed */}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={saveGroupInfoToFirebase}
+                      className="bg-blue-500 rounded-lg p-3 mt-2 flex justify-center items-center  w-full"
+                    >
+                      <p className="text-white font-bold text-lg ">
+                        Save Group
+                      </p>
+                    </button>
+                  </Modal>
+                )}
               </div>
             </div>
+
             {/* Personal Info */}
             <div>
               <p className="font-bold mb-1">S0S Private Info</p>
@@ -180,24 +407,24 @@ const Profile = () => {
                     <input
                       type="text"
                       placeholder="Full Name"
-                      className="p-4 my-2 border-2 border-green-600 rounded-lg w-full"
+                      className="p-4 my-2 border-2 border-blue-500 rounded-lg w-full"
                     />
                     <p className="font-semibold">SOS Contact Name</p>
                     <input
                       type="text"
                       placeholder="SOS Contact Name"
-                      className="p-4 my-2 border-2 border-green-600 rounded-lg  w-full"
+                      className="p-4 my-2 border-2 border-blue-500 rounded-lg  w-full"
                     />
                     <p className="font-semibold">SOS Contact Number</p>
                     <input
                       type="text"
                       placeholder="SOS Contact Number"
-                      className="p-4 my-2 border-2 border-green-600 rounded-lg  w-full"
+                      className="p-4 my-2 border-2 border-blue-500 rounded-lg  w-full"
                     />
                     {/* Save button */}
                     <button
                       onClick={onSaveAndEncrypt}
-                      className="bg-green-600 rounded-lg p-4 mt-2 flex justify-center items-center  w-full"
+                      className="bg-blue-500 rounded-lg p-3 mt-2 flex justify-center items-center  w-full"
                     >
                       <p className="text-white font-bold text-lg ">
                         Save & Encrypt
@@ -225,7 +452,7 @@ const Profile = () => {
                 <div className="flex space-x-2">
                   <div className="flex flex-row pl-2  justify-between items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[100%] h-16 px-2">
                     <Image src={coin} className="w-12 h-12" alt="Coin" />
-                    <p className="font-bold text-base text-center">
+                    <p className="font-bold text-base text-center pr-2">
                       {rewards} BG Token
                     </p>
                   </div>
@@ -248,7 +475,7 @@ const Profile = () => {
             {isRewardsInfoModal && (
               <Modal onClickToggleModal={onClickToggleRewardsInfoModal}>
                 <p className="font-bold text-lg pb-2 w-full">
-                  Your Buddy Guard Rewards
+                  Your Buddy Guard Records
                 </p>
                 <div>
                   {/* list of records */}
@@ -270,19 +497,6 @@ const Profile = () => {
                 {/* Save button */}
               </Modal>
             )}
-            {/* Reputation Score
-            <div>
-              <p className="font-bold mb-1">Reputation Info</p>
-              <div className="flex space-x-2">
-                <div className="flex flex-row pl-4 pr-10 justify-between items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
-                  <Image src={coin} className="w-12 h-12" alt="Coin" />
-                  <p className="font-medium text-base">188 BG Token</p>
-                </div>
-                <button className="rounded-2xl bg-blue-500 w-16 h-16 flex justify-center items-center">
-                  <p className="font-medium text-white">Show</p>
-                </button>
-              </div>
-            </div> */}
 
             {/* Social Graph */}
             {/* <div>

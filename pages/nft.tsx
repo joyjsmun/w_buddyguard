@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function NFT() {
   return (
-    <div className="h-56 w-full p-2 border-2 border-blue-500 rounded-lg">
+    <div className="h-56 w-full p-1 border-2 border-blue-500 rounded-lg ">
       <div className="flex flex-col">
         <p className="font-bold mb-4">Search NFT</p>
         <input
