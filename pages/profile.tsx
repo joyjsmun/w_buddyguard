@@ -45,6 +45,8 @@ const Profile = () => {
   const [isPersonalInfoSaved, setPersonalInfoSaved] = useState(false);
   const [isRewardsInfoModal, setIsRewardsInfoModal] = useState(false);
   const [isGroupInfoModal, setIsGroupInfoModal] = useState(false);
+  const [isVerifiedModal, setIsVerifiedModal] = useState(false);
+
   const [rewards, setRewards] = useState(0); // State to store total rewards score
   const [reputation, setReputation] = useState(0); // State to store total reputation score
   const [rewardRecords, setRewardRecords] = useState([]);
@@ -171,6 +173,10 @@ const Profile = () => {
     setIsGroupInfoModal(!isGroupInfoModal);
   }, [isGroupInfoModal]);
 
+  const onClickToggleVerifiedModal = useCallback(() => {
+    setIsVerifiedModal(!isVerifiedModal);
+  }, [isVerifiedModal]);
+
   const onSaveAndEncrypt = useCallback(() => {
     setPersonalInfoSaved(true);
     setOpenPersonalInfoModal(false);
@@ -188,10 +194,10 @@ const Profile = () => {
   return (
     <Layout>
       <div className="bg-white min-h-screen relative mt-12">
-        <div className="pt-4 px-4 space-y-4">
+        <div className="pt-3 px-4 space-y-4">
           {/* Top Section */}
           <div className="space-y-2">
-            <div className="flex flex-col justify-center items-center w-100 h-50 px-8 py-12 bg-[#F2F2F2] rounded-xl relative">
+            <div className="flex flex-col justify-center items-center w-100 h-50 px-8 py-4 bg-[#F2F2F2] rounded-xl relative">
               <button
                 className="absolute top-2 right-3"
                 onClick={onClickToggleBarcodeModal}
@@ -222,7 +228,42 @@ const Profile = () => {
             </div>
           </div>
           {/* Info Section */}
-          <div className="space-y-10">
+          <div className="space-y-4">
+            {/* Verified User Info */}
+            <div>
+              <p className="font-bold mb-1">
+                Please Verify Your Wallet with WaltID
+              </p>
+              <div className="flex space-x-2">
+                <div className="flex flex-row pl-5 justify-start items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
+                  <Image src={verified} className="w-11 h-11" alt="Group" />
+                  {/* default - Hasn't verified Yet*/}
+                  <p className="font-medium text-base">
+                    Please Click Verify Button
+                  </p>
+                </div>
+                <button
+                  onClick={onClickToggleVerifiedModal}
+                  className="rounded-2xl bg-blue-500 w-16 h-16 flex justify-center items-center"
+                >
+                  <p className="font-medium text-white">Verify</p>
+                </button>
+                {/* WaltID Verification Modal */}
+
+                {isVerifiedModal && (
+                  <Modal onClickToggleModal={onClickToggleVerifiedModal}>
+                    {/* Save button */}
+
+                    <button className="bg-blue-500 rounded-lg p-3 mt-2 flex justify-center items-center  w-full">
+                      <p className="text-white font-bold text-lg ">
+                        Request WaltID Verification
+                      </p>
+                    </button>
+                  </Modal>
+                )}
+              </div>
+            </div>
+
             {/* Group Info */}
             <div>
               <p className="font-bold mb-1">Group Info</p>
@@ -382,7 +423,7 @@ const Profile = () => {
             </div>
 
             {/* Personal Info */}
-            <div>
+            <div className="">
               <p className="font-bold mb-1">S0S Private Info</p>
               <div className="flex space-x-2">
                 <div className="flex flex-row pl-5 justify-start items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
@@ -437,7 +478,7 @@ const Profile = () => {
             {/* Reward Info */}
             <div>
               <div
-                className="flex flex-row justify-between items-center mb-4 space-x-6
+                className="flex flex-row justify-between items-center pt-4  mb-4 space-x-6
               "
               >
                 <p className="font-bold mb-1">Rewards & Reputation</p>

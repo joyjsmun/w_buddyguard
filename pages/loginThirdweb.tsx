@@ -46,8 +46,8 @@ export default function Login() {
             groupName: "Team Buddy Guard",
             groupContractAddress: "",
             totalRewards: 0,
-            totalReputation: 0, // Initial reputation score
-            personalInfo: "", // Optional: profile page
+            totalReputation: 0,
+            personalInfo: "",
             verified: false,
             waltIdCertification: "",
           },
