@@ -43,7 +43,7 @@ export default function Login() {
           usersRef,
           {
             createdAt: serverTimestamp(),
-            groupName: "Team Buddy Guard",
+            groupName: "Add Your BuddyGuard Group Info",
             groupContractAddress: "",
             totalRewards: 0,
             totalReputation: 0,

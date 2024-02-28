@@ -171,9 +171,9 @@ const WalkStatus = () => {
 
         // Add record to the user's reward_records subcollection
         await addDoc(recordsRef, {
-          orderNumber: increment(lastOrderNumber + 1), // Increment from the last orderNumber
+          orderNumber: increment(lastOrderNumber + 1),
           type: "Buddy Guard Service Reward",
-          rewardAmount: 5000, // Assuming you're rewarding 10 tokens
+          rewardAmount: 5000,
           totalRewards: totalRewards,
           totalReputation: totalReputation,
           rewardReceivedAt: serverTimestamp(),
@@ -310,8 +310,8 @@ const WalkStatus = () => {
               </button>
               <button
                 onClick={async () => {
-                  await handleCompleteOrder();
-                  //await handleArrive();
+                  //await handleCompleteOrder();
+                  await handleArrive();
 
                   //router.push("/home");
                 }}

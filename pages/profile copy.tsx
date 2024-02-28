@@ -26,7 +26,8 @@ import {
 } from "../public/assets/images";
 
 import Layout from "@/components/layout";
-import axios from "axios";
+import axios from 'axios';
+
 
 import initializeFirebaseClient from "../lib/initFirebase";
 import {
@@ -38,17 +39,15 @@ import {
   query,
   updateDoc,
 } from "firebase/firestore";
-import { shortenAddressWithChecksum } from "@/components/shortenAddress";
 
 const Profile = () => {
   const router = useRouter();
   const [isOpenBarcodeModal, setOpenBarcodeModal] = useState(false);
   const [isOpenPersonalInfoModal, setOpenPersonalInfoModal] = useState(false);
+  const [isPersonalInfoSaved, setPersonalInfoSaved] = useState(false);
   const [isRewardsInfoModal, setIsRewardsInfoModal] = useState(false);
   const [isGroupInfoModal, setIsGroupInfoModal] = useState(false);
   const [isVerifiedModal, setIsVerifiedModal] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
-  const [isUserAddress, setIsUserAddress] = useState("");
 
   const [rewards, setRewards] = useState(0); // State to store total rewards score
   const [reputation, setReputation] = useState(0); // State to store total reputation score
@@ -75,13 +74,6 @@ const Profile = () => {
           if (userData) {
             setRewards(userData.totalRewards || 0);
             setReputation(userData.totalReputation || 0);
-            setGroupInfo({
-              groupName: userData.groupName || "",
-              groupContractAddress: userData.groupContractAddress || "",
-            });
-            setGroupContractAddress(userData.groupContractAddress || "");
-            setIsVerified(userData.verified || false);
-            setIsUserAddress(user.uid); // Set user address here if needed
           }
         }
       } catch (error) {
@@ -116,108 +108,110 @@ const Profile = () => {
     }
   }, [isRewardsInfoModal]);
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const { auth, db } = initializeFirebaseClient();
+        const user = auth.currentUser;
+        if (user) {
+          const userRef = doc(db, "users", user.uid);
+          const userSnapshot = await getDoc(userRef);
+          const userData = userSnapshot.data();
+          if (userData) {
+            setGroupInfo({
+              groupName: userData.groupName || "",
+              groupContractAddress: userData.groupContractAddress || "",
+            });
+            setGroupContractAddress(userData.groupContractAddress || "");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   async function issueVerifiableCredential() {
     console.log("clicked");
     try {
-      const response = await axios.post(
-        "https://issuer.portal.walt.id/raw/jwt/sign",
-        {
-          issuanceKey: {
-            type: "local",
-            jwk: {
-              kty: "OKP",
-              d: "mDhpwaH6JYSrD2Bq7Cs-pzmsjlLj4EOhxyI-9DM1mFI",
-              crv: "Ed25519",
-              kid: "Vzx7l5fh56F3Pf9aR3DECU5BwfrY6ZJe05aiWYWzan8",
-              x: "T3T4-u1Xz3vAV2JwPNxWfs4pik_JLiArz_WTCvrCFUM",
-            },
+      const response = await axios.post('https://issuer.portal.walt.id/raw/jwt/sign', {
+        issuanceKey: {
+          type: 'local',
+          jwk: {
+            kty: 'OKP',
+            d: 'mDhpwaH6JYSrD2Bq7Cs-pzmsjlLj4EOhxyI-9DM1mFI',
+            crv: 'Ed25519',
+            kid: 'Vzx7l5fh56F3Pf9aR3DECU5BwfrY6ZJe05aiWYWzan8',
+            x: 'T3T4-u1Xz3vAV2JwPNxWfs4pik_JLiArz_WTCvrCFUM',
           },
-          issuerDid: "did:key:z6MkjoRhq1jSNJdLiruSXrFFxagqrztZaXHqHGUTKJbcNywp",
-          vc: {
-            "@context": [
-              "https://www.w3.org/2018/credentials/v1",
-              "https://purl.imsglobal.org/spec/ob/v3p0/context.json",
-            ],
-            id: "urn:uuid:THIS WILL BE REPLACED WITH DYNAMIC DATA FUNCTION (see below)",
-            type: ["VerifiableCredential", "OpenBadgeCredential"],
-            name: "JFF x vc-edu PlugFest 3 Interoperability",
-            issuer: {
-              type: ["Profile"],
-              id: "did:key:THIS WILL BE REPLACED WITH DYNAMIC DATA FUNCTION FROM CONTEXT (see below)",
-              name: "Jobs for the Future (JFF)",
-              url: "https://www.jff.org/",
-              image:
-                "https://w3c-ccg.github.io/vc-ed/plugfest-1-2022/images/JFF_LogoLockup.png",
-            },
-            issuanceDate:
-              "2023-07-20T07:05:44Z (THIS WILL BE REPLACED BY DYNAMIC DATA FUNCTION (see below))",
-            expirationDate:
-              "WILL BE MAPPED BY DYNAMIC DATA FUNCTION (see below)",
-            credentialSubject: {
-              id: "did:key:123 (THIS WILL BE REPLACED BY DYNAMIC DATA FUNCTION (see below))",
-              type: ["AchievementSubject"],
-              achievement: {
-                id: "urn:uuid:ac254bd5-8fad-4bb1-9d29-efd938536926",
-                type: ["Achievement"],
-                name: "JFF x vc-edu PlugFest 3 Interoperability",
-                description:
-                  "This wallet supports the use of W3C Verifiable Credentials and has demonstrated interoperability during the presentation request workflow during JFF x VC-EDU PlugFest 3.",
-                criteria: {
-                  type: "Criteria",
-                  narrative:
-                    "Wallet solutions providers earned this badge by demonstrating interoperability during the presentation request workflow. This includes successfully receiving a presentation request, allowing the holder to select at least two types of verifiable credentials to create a verifiable presentation, returning the presentation to the requestor, and passing verification of the presentation and the included credentials.",
-                },
-                image: {
-                  id: "https://w3c-ccg.github.io/vc-ed/plugfest-3-2023/images/JFF-VC-EDU-PLUGFEST3-badge-image.png",
-                  type: "Image",
-                },
+        },
+        issuerDid: 'did:key:z6MkjoRhq1jSNJdLiruSXrFFxagqrztZaXHqHGUTKJbcNywp',
+        vc: {
+          '@context': [
+            'https://www.w3.org/2018/credentials/v1',
+            'https://purl.imsglobal.org/spec/ob/v3p0/context.json',
+          ],
+          id: 'urn:uuid:THIS WILL BE REPLACED WITH DYNAMIC DATA FUNCTION (see below)',
+          type: ['VerifiableCredential', 'OpenBadgeCredential'],
+          name: 'JFF x vc-edu PlugFest 3 Interoperability',
+          issuer: {
+            type: ['Profile'],
+            id: 'did:key:THIS WILL BE REPLACED WITH DYNAMIC DATA FUNCTION FROM CONTEXT (see below)',
+            name: 'Jobs for the Future (JFF)',
+            url: 'https://www.jff.org/',
+            image: 'https://w3c-ccg.github.io/vc-ed/plugfest-1-2022/images/JFF_LogoLockup.png',
+          },
+          issuanceDate: '2023-07-20T07:05:44Z (THIS WILL BE REPLACED BY DYNAMIC DATA FUNCTION (see below))',
+          expirationDate: 'WILL BE MAPPED BY DYNAMIC DATA FUNCTION (see below)',
+          credentialSubject: {
+            id: 'did:key:123 (THIS WILL BE REPLACED BY DYNAMIC DATA FUNCTION (see below))',
+            type: ['AchievementSubject'],
+            achievement: {
+              id: 'urn:uuid:ac254bd5-8fad-4bb1-9d29-efd938536926',
+              type: ['Achievement'],
+              name: 'JFF x vc-edu PlugFest 3 Interoperability',
+              description: 'This wallet supports the use of W3C Verifiable Credentials and has demonstrated interoperability during the presentation request workflow during JFF x VC-EDU PlugFest 3.',
+              criteria: {
+                type: 'Criteria',
+                narrative: 'Wallet solutions providers earned this badge by demonstrating interoperability during the presentation request workflow. This includes successfully receiving a presentation request, allowing the holder to select at least two types of verifiable credentials to create a verifiable presentation, returning the presentation to the requestor, and passing verification of the presentation and the included credentials.',
+              },
+              image: {
+                id: 'https://w3c-ccg.github.io/vc-ed/plugfest-3-2023/images/JFF-VC-EDU-PLUGFEST3-badge-image.png',
+                type: 'Image',
               },
             },
           },
-          mapping: {
-            id: "<uuid>",
-            issuer: {
-              id: "<issuerDid>",
-            },
-            credentialSubject: {
-              id: "<subjectDid>",
-            },
-            issuanceDate: "<timestamp>",
-            expirationDate: "<timestamp-in:365d>",
-          },
         },
-        {
-          headers: {
-            accept: "application/json",
-            "walt-key": JSON.stringify({
-              type: "local",
-              jwk: '{"kty":"OKP","d":"c0Kp30JlWHo7TTrUlIa5VAITSz7kHyjgcf8GhrE62HM","crv":"Ed25519","kid":"fY65A6wctTWJ8dx0nQMZRSOq9jeTqcvkhBf031-m5xw","x":"jztE8zvLq5jK32Bq3u7BoPh0-F5ZgCzY-yY6-4fyb4k"}',
-            }),
-            "walt-issuerDid":
-              "did:key:z6Mkp6NmHZeksMF5T6uKpLvVqgJQjYjnAZggdKQv2PmfD2ja",
-            "walt-subjectDid":
-              "did:jwk:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5Iiwia2lkIjoieGk2RnNJRl9uYVlrN2dFcS0ycHRGQlZEaURUanl5MVpMVUdSWkx3eHE3USIsIngiOiJnQ0NpMHdMem9yRW1QTFNLWVg0bVhsUlRoOVdlQzF6YWYwd1pJRXQySG5JIn0",
-            "Content-Type": "application/json",
+        mapping: {
+          id: '<uuid>',
+          issuer: {
+            id: '<issuerDid>',
           },
-        }
-      );
-
-      console.log("Verifiable Credential Issued:", response.data);
-      alert("Verification successful!");
-
-      const { auth, db } = initializeFirebaseClient();
-      const user = auth.currentUser;
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        await updateDoc(userRef, {
-          verified: true,
-          waltIdCertification: response.data,
-        });
-
-        window.location.reload();
-      }
+          credentialSubject: {
+            id: '<subjectDid>',
+          },
+          issuanceDate: '<timestamp>',
+          expirationDate: '<timestamp-in:365d>',
+        },
+      },
+      {
+        headers: {
+          accept: 'application/json',
+          'walt-key': JSON.stringify({
+            type: 'local',
+            jwk: '{"kty":"OKP","d":"c0Kp30JlWHo7TTrUlIa5VAITSz7kHyjgcf8GhrE62HM","crv":"Ed25519","kid":"fY65A6wctTWJ8dx0nQMZRSOq9jeTqcvkhBf031-m5xw","x":"jztE8zvLq5jK32Bq3u7BoPh0-F5ZgCzY-yY6-4fyb4k"}',
+          }),
+          'walt-issuerDid': 'did:key:z6Mkp6NmHZeksMF5T6uKpLvVqgJQjYjnAZggdKQv2PmfD2ja',
+          'walt-subjectDid': 'did:jwk:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5Iiwia2lkIjoieGk2RnNJRl9uYVlrN2dFcS0ycHRGQlZEaURUanl5MVpMVUdSWkx3eHE3USIsIngiOiJnQ0NpMHdMem9yRW1QTFNLWVg0bVhsUlRoOVdlQzF6YWYwd1pJRXQySG5JIn0',
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      console.log('Verifiable Credential Issued:', response.data);
     } catch (error) {
-      console.error("Error issuing Verifiable Credential:");
+      console.error('Error issuing Verifiable Credential:');
     }
   }
 
@@ -309,78 +303,50 @@ const Profile = () => {
               <div className="text-center">
                 <div className="flex items-center">
                   <p className="font-bold text-2xl">Vita C</p>
-                  {isVerified ? (
+                  {isPersonalInfoSaved && (
                     <Image src={verified} className="w-9 h-9" alt="Verified" />
-                  ) : (
-                    <div></div>
                   )}
                 </div>
-                <p className="font-bold text-base">
-                  {isUserAddress
-                    ? shortenAddressWithChecksum(isUserAddress)
-                    : ""}
-                </p>
+                <p className="font-bold text-base">0x123412312</p>
               </div>
             </div>
           </div>
           {/* Info Section */}
           <div className="space-y-4">
             {/* Verified User Info */}
-            {isVerified ? (
-              <div>
-                <p className="font-bold mb-1">You are a Verified User</p>
-                <div className="flex space-x-2">
-                  <div className="flex flex-row pl-5 justify-start items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
-                    <Image src={verified} className="w-11 h-11" alt="Group" />
-                    <p className="font-bold text-base text-green-500 ">
-                      Your Verification is completed with WaltID
-                    </p>
-                  </div>
-                  <button
-                    disabled
-                    className="rounded-xl bg-green-500 w-20 h-16 px-2 flex justify-center items-center"
-                  >
-                    <p className="font-medium text-white">Verified</p>
-                  </button>
+            <div>
+              <p className="font-bold mb-1">
+                Please Verify Your Wallet with WaltID
+              </p>
+              <div className="flex space-x-2">
+                <div className="flex flex-row pl-5 justify-start items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
+                  <Image src={verified} className="w-11 h-11" alt="Group" />
+                  {/* default - Hasn't verified Yet*/}
+                  <p className="font-medium text-base">
+                    Please Click Verify Button
+                  </p>
                 </div>
-              </div>
-            ) : (
-              <div>
-                <p className="font-bold mb-1">
-                  Please Verify Your Wallet with WaltID
-                </p>
-                <div className="flex space-x-2">
-                  <div className="flex flex-row pl-5 justify-start items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
-                    <Image src={verified} className="w-11 h-11" alt="Group" />
-                    <p className="font-medium text-base">
-                      Please Click Verify Button
-                    </p>
-                  </div>
-                  <button
-                    onClick={onClickToggleVerifiedModal}
-                    className="rounded-xl bg-blue-500 w-16 h-16 flex justify-center items-center"
-                  >
-                    <p className="font-medium text-white">Verify</p>
-                  </button>
-                  {/* WaltID Verification Modal */}
+                <button
+                  onClick={onClickToggleVerifiedModal}
+                  className="rounded-2xl bg-blue-500 w-16 h-16 flex justify-center items-center"
+                >
+                  <p className="font-medium text-white">Verify</p>
+                </button>
+                {/* WaltID Verification Modal */}
 
-                  {isVerifiedModal && (
-                    <Modal onClickToggleModal={onClickToggleVerifiedModal}>
-                      {/* Save button */}
+                {isVerifiedModal && (
+                  <Modal onClickToggleModal={onClickToggleVerifiedModal}>
+                    {/* Save button */}
 
-                      <button
-                        onClick={issueVerifiableCredential}
-                        className="bg-blue-500 rounded-lg p-3 mt-2 flex justify-center items-center  w-full"
-                      >
-                        <p className="text-white font-bold text-lg ">
-                          Request WaltID Verification
-                        </p>
-                      </button>
-                    </Modal>
-                  )}
-                </div>
+                    <button onClick={issueVerifiableCredential} className="bg-blue-500 rounded-lg p-3 mt-2 flex justify-center items-center  w-full">
+                      <p className="text-white font-bold text-lg ">
+                        Request WaltID Verification
+                      </p>
+                    </button>
+                  </Modal>
+                )}
               </div>
-            )}
+            </div>
 
             {/* Group Info */}
             <div>
@@ -395,7 +361,7 @@ const Profile = () => {
                 </div>
                 <button
                   onClick={onClickToggleGroupInfoModal}
-                  className="rounded-xl bg-blue-500 w-16 h-16 flex justify-center items-center"
+                  className="rounded-2xl bg-blue-500 w-16 h-16 flex justify-center items-center"
                 >
                   <p className="font-medium text-white">Edit</p>
                 </button>
@@ -552,7 +518,7 @@ const Profile = () => {
                 </div>
                 <button
                   onClick={onClickTogglePersonalInfoModal}
-                  className="rounded-xl w-16 h-16 flex justify-center items-center bg-blue-500"
+                  className="rounded-2xl w-16 h-16 flex justify-center items-center bg-blue-500"
                 >
                   <p className="font-medium text-white">Add</p>
                 </button>
@@ -656,6 +622,14 @@ const Profile = () => {
                 {/* Save button */}
               </Modal>
             )}
+
+            {/* Social Graph */}
+            {/* <div>
+              <p className="font-bold mb-1">Social Graph</p>
+              <div className="flex space-x-2">
+                <div className="rounded-xl bg-[#F2F2F2] w-full h-40 flex justify-center items-center"></div>
+              </div>
+            </div> */}
           </div>
         </div>
       </div>
