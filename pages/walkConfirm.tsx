@@ -10,7 +10,8 @@ const WalkConfirm = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   async function HandleCreateOrder() {
-    const contractAddress = "0x4EeFA835A807c36DD0a643A7D97cD6E2b8Ca29c2";
+    //const contractAddress = process.env.BUDDY_GUARD_CONTRACT;
+    const contractAddress = "0x4eefa835a807c36dd0a643a7d97cd6e2b8ca29c2";
     const guardians = ["0xE1e5E0b3830454d68aE7B8926540a8AC0FdcabC0"];
 
     // Check if Ethereum is available in the browser
@@ -54,6 +55,12 @@ const WalkConfirm = () => {
       const tx = await buddyGuardContract.createOrder(guardians);
       await tx.wait();
       console.log(`Order created successfully. Transaction hash: ${tx.hash}`);
+      const txHash = tx.hash;
+      const url = `https://sepolia.arbiscan.io/tx/${txHash}`;
+      const message = `Buddy Guard was selected!!`;
+      window.alert(message);
+      window.open(url, "_blank");
+
       router.push("/walkStatus"); // Redirect to walkStatus page after order creation
     } catch (error) {
       console.error("Error creating order:", error);
@@ -159,7 +166,9 @@ const WalkConfirm = () => {
             <div className="flex flex-col space-y-2">
               <div className="flex justify-end items-center space-x-4">
                 <span className="font-bold text-2xl text-red-500">Total</span>
-                <span className="font-bold text-lg">25 Buddy Token</span>
+                <span className="font-bold text-lg">
+                  5000 Buddy Guard Token
+                </span>
               </div>
               <span className="font-bold text-red-500 text-right">
                 15 mins Away to Your Destination

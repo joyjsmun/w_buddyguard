@@ -30,7 +30,7 @@ import initializeFirebaseClient from "../lib/initFirebase";
 const WalkStatus = () => {
   const router = useRouter();
   const [isSosModal, setIsSosModal] = useState(false);
-  const [isOrderId, setIsOrderId] = useState(38);
+  const [isOrderId, setIsOrderId] = useState(37);
   const [selectedBuddyGuard, setSelectedBuddyGuard] = useState(null);
   const [isCurrentBuddyGuard, setIsCurrentBuddyGuard] = useState([]);
   const [selectedRemoveBuddyGuard, setSelectedRemoveBuddyGuard] =
@@ -54,12 +54,12 @@ const WalkStatus = () => {
     setSelectedBuddyGuard(buddyGuard);
   };
 
+  // Function to handle adding the selected Buddy Guard
   const handleAddBuddyGuard = async () => {
     if (!selectedBuddyGuard) {
-      console.error("No Buddy Guard selected.");
+      console.error("No buddy guard selected.");
       return;
     }
-    handleChangeGuardians();
 
     // Add the selected buddy guard to the isCurrentBuddyGuard array
     setIsCurrentBuddyGuard((prevCurrentBuddyGuards) => [
@@ -76,6 +76,18 @@ const WalkStatus = () => {
 
     // Reset the selected buddy guard state
     setSelectedBuddyGuard(null);
+
+    console.log("add1", selectedBuddyGuard);
+
+    // Call handleChangeGuardians only if selectedBuddyGuard is not null
+    if (selectedBuddyGuard && selectedBuddyGuard.address) {
+      // Use setState callback to ensure handleChangeGuardians is called after state update
+      setIsCurrentBuddyGuard((updatedCurrentBuddyGuards) => {
+        handleChangeGuardians(selectedBuddyGuard, null);
+        return updatedCurrentBuddyGuards;
+      });
+    }
+    console.log("add2", selectedBuddyGuard);
   };
 
   console.log("remove", selectedBuddyGuard);
