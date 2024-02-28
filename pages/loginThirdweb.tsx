@@ -3,19 +3,21 @@ import { ConnectWallet, useAddress, useAuth } from "@thirdweb-dev/react";
 import { doc, serverTimestamp, setDoc, getDoc } from "firebase/firestore";
 import { signInWithCustomToken } from "firebase/auth";
 import initializeFirebaseClient from "../lib/initFirebase";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import Image from "next/image";
+import { LogoImage } from "@/public/assets/images";
 
 export default function Login() {
   const thirdwebAuth = useAuth();
   const address = useAddress();
   const { auth, db } = initializeFirebaseClient();
+  const router = useRouter();
 
-  // Note: This function lives inside the Login component above.
   async function signIn() {
-    // Use the same address as the one specified in _app.tsx.
     const payload = await thirdwebAuth?.login();
 
     try {
-      // Make a request to the API with the payload.
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -24,21 +26,15 @@ export default function Login() {
         body: JSON.stringify({ payload }),
       });
 
-      // Get the returned JWT token to use it to sign in with
       const { token } = await res.json();
 
-      // Sign in with the token.
       const userCredential = await signInWithCustomToken(auth, token);
-      // On success, we have access to the user object.
       const user = userCredential.user;
 
-      // If this is a new user, we create a new document in the database.
       const usersRef = doc(db, "users", user.uid!);
       const userDoc = await getDoc(usersRef);
 
       if (!userDoc.exists()) {
-        // User now has permission to update their own document outlined in the Firestore rules.
-        // Add necessary columns for the new user with empty values
         setDoc(
           usersRef,
           {
@@ -54,18 +50,42 @@ export default function Login() {
           { merge: true }
         );
       }
+
+      // Navigate to the home page after successful sign-in
+      router.push("/home");
     } catch (error) {
       console.error(error);
     }
   }
 
   return (
-    <div>
-      {address ? (
-        <button onClick={() => signIn()}>Sign in with Wallet</button>
-      ) : (
-        <ConnectWallet />
-      )}
+    <div className="bg-[#F6D268] flex flex-col space-y-10 items-center justify-center h-screen relative">
+      <Head>
+        <title>Login Page</title>
+        <meta name="login" />
+      </Head>
+      {/* loading page start */}
+      <div className="flex flex-col items-center justify-center space-y-2">
+        <Image className="w-20 h-22 mb-2" src={LogoImage} alt="Logo" />
+        <h1 className="text-center text-3xl font-extrabold text-orange-500">
+          Buddy Guard
+        </h1>
+        <p className="text-center text-base font-bold text-gray-800">
+          Safety Social dApp
+        </p>
+      </div>
+      <div>
+        {address ? (
+          <button
+            className="rounded-lg bg-blue-500 w-full p-4 font-bold text-white"
+            onClick={() => signIn()}
+          >
+            Join Buddy Guard Member
+          </button>
+        ) : (
+          <ConnectWallet />
+        )}
+      </div>
     </div>
   );
 }

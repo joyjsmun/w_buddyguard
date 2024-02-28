@@ -30,7 +30,7 @@ import initializeFirebaseClient from "../lib/initFirebase";
 const WalkStatus = () => {
   const router = useRouter();
   const [isSosModal, setIsSosModal] = useState(false);
-  const [isOrderId, setIsOrderId] = useState(38);
+  const [isOrderId, setIsOrderId] = useState(40);
   const [selectedBuddyGuard, setSelectedBuddyGuard] = useState(null);
   const [isCurrentBuddyGuard, setIsCurrentBuddyGuard] = useState([]);
   const [selectedRemoveBuddyGuard, setSelectedRemoveBuddyGuard] =
@@ -425,32 +425,34 @@ const WalkStatus = () => {
             </div>
             {/* Display remove button for selected buddy guard */}
             {/* Display the selected buddy guard's avatar */}
-            {selectedBuddyGuard && (
-              <button className="">
-                <Image
-                  className="w-16 h-16 rounded-full relative border-4 border-green-500 p-1"
-                  src={selectedBuddyGuard.avatar}
-                  alt={`Buddy Guard ${selectedBuddyGuard.id}`}
-                />
-              </button>
-            )}
-
-            {/* Display remove button for each buddy guard in isCurrentBuddyGuard */}
-            {isCurrentBuddyGuard.map((buddyGuard) => (
-              <div key={buddyGuard.id} className="relative">
-                <button
-                  onClick={() => handleRemoveBuddyGuard(buddyGuard)}
-                  className="absolute top-0 right-0 bg-red-500 rounded-full text-white w-6 h-6 flex items-center justify-center"
-                >
-                  remove
+            <div>
+              {/* {selectedBuddyGuard && (
+                <button className="">
+                  <Image
+                    className="w-16 h-16 rounded-full relative border-4 border-green-500 p-1"
+                    src={selectedBuddyGuard.avatar}
+                    alt={`Buddy Guard ${selectedBuddyGuard.id}`}
+                  />
                 </button>
-                <Image
-                  className="w-16 h-16 rounded-full relative border-4 border-green-500 p-1"
-                  src={buddyGuard.avatar}
-                  alt={`Buddy Guard ${buddyGuard.id}`}
-                />
-              </div>
-            ))}
+              )} */}
+
+              {/* Display remove button for each buddy guard in isCurrentBuddyGuard */}
+              {isCurrentBuddyGuard.map((buddyGuard) => (
+                <div key={buddyGuard.id} className="relative">
+                  <button
+                    onClick={() => handleRemoveBuddyGuard(buddyGuard)}
+                    className="absolute top-3 right-10 bg-red-500 text-white font-bold py-3 w-1/3 rounded-lg items-center justify-center"
+                  >
+                    remove
+                  </button>
+                  <Image
+                    className="w-16 h-16 rounded-full relative border-4 border-green-500 p-1"
+                    src={buddyGuard.avatar}
+                    alt={`Buddy Guard ${buddyGuard.id}`}
+                  />
+                </div>
+              ))}
+            </div>
             <div className="flex justify-around items-center space-x-3">
               <button
                 onClick={() => setIsSosModal(true)}
@@ -463,7 +465,7 @@ const WalkStatus = () => {
                   await handleCompleteOrder();
                   await handleArrive();
 
-                  //router.push("/home");
+                  router.push("/home");
                 }}
                 className="bg-[#4F9171] text-white font-bold py-3 w-full rounded-lg"
               >

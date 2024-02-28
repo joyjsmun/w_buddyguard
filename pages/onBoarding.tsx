@@ -7,10 +7,8 @@ import {
   safety,
   trust,
 } from "../public/assets/images";
-// import { useAccount } from "wagmi";
-import Modal from "@/components/modal";
+
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
-import Login from "./loginThirdweb";
 
 const OnBoarding = () => {
   const router = useRouter();
@@ -57,7 +55,7 @@ const OnBoarding = () => {
       if (address) {
         router.push("/home");
       } else {
-        router.push("/ConnectWalletScreen");
+        router.push("/loginThirdweb");
       }
     }
   };
@@ -66,6 +64,8 @@ const OnBoarding = () => {
     // Only push to home if wallet is connected
     if (address) {
       router.push("/home");
+    } else {
+      router.push("/loginThirdweb");
     }
   };
 
@@ -108,11 +108,6 @@ const OnBoarding = () => {
         >
           {currentSlideIndex === slides.length - 1 ? "Get Started" : "Next"}
         </button>
-        {!address && currentSlideIndex === slides.length - 1 && (
-          <Modal onClickToggleModal={handleWalletConnectModal}>
-            <Login />
-          </Modal>
-        )}
       </div>
     </div>
   );

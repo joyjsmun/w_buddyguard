@@ -49,7 +49,7 @@ const Home = () => {
     <Layout>
       <div className="bg-white min-h-screen flex flex-col ">
         <div className="pt-9 px-4 flex justify-between items-center mt-8">
-          <ConnectWallet />
+          <ConnectWallet theme={"light"} modalSize={"compact"} />
           <div className="flex flex-row space-x-1">
             <button onClick={() => router.push("/acceptRequest")}>
               <Image src={InboxIcon} className="w-12 h-12 mr-1" alt="Inbox" />
