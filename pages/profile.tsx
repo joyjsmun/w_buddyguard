@@ -338,7 +338,7 @@ const Profile = () => {
                   <Modal onClickToggleModal={onClickToggleVerifiedModal}>
                     {/* Save button */}
 
-                    <button className="bg-blue-500 rounded-lg p-3 mt-2 flex justify-center items-center  w-full">
+                    <button onClick={issueVerifiableCredential} className="bg-blue-500 rounded-lg p-3 mt-2 flex justify-center items-center  w-full">
                       <p className="text-white font-bold text-lg ">
                         Request WaltID Verification
                       </p>
