@@ -24,12 +24,123 @@ import {
   collection,
   serverTimestamp,
 } from "firebase/firestore";
-import { useAuth } from "@thirdweb-dev/react";
+import { ethers } from "ethers";
 import initializeFirebaseClient from "../lib/initFirebase";
 
 const WalkStatus = () => {
   const router = useRouter();
   const [isSosModal, setIsSosModal] = useState(false);
+
+  async function handleChangeGuardians() {
+    // Check if Ethereum is available in the browser
+    if (!window.ethereum) {
+      console.error(
+        "Error: Ethereum provider not found. Please install MetaMask or another Ethereum wallet."
+      );
+      return;
+    }
+
+    // Request access to the user's Ethereum account and signature
+    try {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+    } catch (error) {
+      console.error("Error requesting Ethereum account access:", error);
+      return;
+    }
+
+    // Use the injected provider from MetaMask
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    // Get the current user's wallet
+    const userWallet = provider.getSigner();
+
+    // Get the address of the BuddyGuard contract from environment variables
+    const buddyGuardAddress = "0x4EeFA835A807c36DD0a643A7D97cD6E2b8Ca29c2";
+
+    // ABI for the BuddyGuard contract's `changeGuardians` function
+    const buddyGuardABI = [
+      "function changeGuardians(uint256 _orderId, address[] calldata _guardiansToAdd, address[] calldata _guardiansToRemove) external",
+    ];
+
+    // Connect to the BuddyGuard contract using the user's wallet
+    const buddyGuardContract = new ethers.Contract(
+      buddyGuardAddress,
+      buddyGuardABI,
+      userWallet
+    );
+
+    // Specify the order ID and guardians to add/remove
+    const orderId = 13;
+    const guardiansToAdd = ["0x97d7a75Bec591698e7FAd02c2e89f6b1E79D343C"];
+    const guardiansToRemove = [];
+
+    try {
+      // Call the `changeGuardians` function on the BuddyGuard contract
+      const tx = await buddyGuardContract.changeGuardians(
+        orderId,
+        guardiansToAdd,
+        guardiansToRemove,
+        {
+          gasLimit: 10000000, // Specify your desired gas limit here
+        }
+      );
+
+      await tx.wait(); // Wait for the transaction to be mined
+
+      console.log("Guardians changed successfully");
+    } catch (error) {
+      console.error("Error changing guardians:", error);
+    }
+  }
+
+  async function handleCompleteOrder() {
+    try {
+      // The address of the deployed buddyGuard contract
+      const contractAddress = "0x4EeFA835A807c36DD0a643A7D97cD6E2b8Ca29c2";
+
+      // The ID of the order to complete
+      const orderId = 10; // Example order ID, replace with actual order ID
+
+      // Check if Ethereum is available in the browser
+      if (!window.ethereum) {
+        throw new Error(
+          "Ethereum provider not found. Please install MetaMask or another Ethereum wallet."
+        );
+      }
+
+      // Request access to the user's Ethereum account and signature
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+
+      // Use the injected provider from MetaMask
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+      // Get the signer
+      const signer = provider.getSigner();
+
+      // The ABI for the buddyGuard contract's `completeOrder` function
+      const contractABI = ["function completeOrder(uint256 _orderId) external"];
+
+      // Connect to the buddyGuard contract
+      const buddyGuard = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+
+      // Call the `completeOrder` function
+      console.log(`Completing order with ID: ${orderId}`);
+      const tx = await buddyGuard.completeOrder(orderId, {
+        gasLimit: 10000000, // Specify your desired gas limit here
+      });
+      await tx.wait(); // Wait for the transaction to be mined
+
+      console.log(
+        `Order with ID ${orderId} completed successfully. Transaction Hash: ${tx.hash}`
+      );
+    } catch (error) {
+      console.error("Error completing order:", error);
+    }
+  }
 
   const handleArrive = async () => {
     try {
@@ -101,6 +212,13 @@ const WalkStatus = () => {
             <h1 className="text-gray-900 font-medium text-lg">
               Where Do You Wanna Go?
             </h1>
+            <button
+              onClick={async () => {
+                await handleChangeGuardians();
+              }}
+            >
+              add
+            </button>
             <button onClick={() => router.push("/hangout")}>
               <Image
                 className="w-full h-40 mb-2 rounded-lg"
@@ -150,12 +268,7 @@ const WalkStatus = () => {
                     once they arrive
                   </p>
                 </div>
-                <button
-                  onClick={() => {
-                    // Handle SOS message sending
-                  }}
-                  className="bg-red-500 text-white font-bold py-3 px-6 rounded-lg"
-                >
+                <button className="bg-red-500 text-white font-bold py-3 px-6 rounded-lg">
                   Send SOS Message Now
                 </button>
               </Modal>
@@ -197,7 +310,9 @@ const WalkStatus = () => {
               </button>
               <button
                 onClick={async () => {
-                  await handleArrive();
+                  await handleCompleteOrder();
+                  //await handleArrive();
+
                   //router.push("/home");
                 }}
                 className="bg-[#4F9171] text-white font-bold py-3 w-full rounded-lg"

@@ -21,9 +21,11 @@ const WalkConfirm = () => {
       return;
     }
 
-    // Request access to the user's Ethereum account
+    // Request access to the user's Ethereum account and signature
     try {
-      await window.ethereum.request({ method: "eth_requestAccounts" });
+      await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
     } catch (error) {
       console.error("Error requesting Ethereum account access:", error);
       return;
