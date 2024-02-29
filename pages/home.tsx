@@ -28,10 +28,10 @@ const Home = () => {
     // Initialize wallet user, pass 'prod' instead of 'staging' for mainnet apps
     const userAlice = await PushAPI.initialize(signer, { env: "staging" });
 
-    const messageContent = `Emergency Situation\nSOS User: Vitalik J\nSOS Location Link: La Sagrada Familia, Barcelona, Spain\nPersonal Contact Number: 987-232-1829`;
+    const messageContent = `Emergency Situation\nSOS User: Vitalik J\nSOS Location Link: 1212st, Barcelona, Spain\nPersonal Contact Number: 987-232-1829`;
 
     // Send a message to Bob
-    await userAlice.chat.send("0x7C81461eE3EfEc10CC6BB3A3DbBA3CCA9B0EF127", {
+    await userAlice.chat.send("0x97d7a75Bec591698e7FAd02c2e89f6b1E79D343C", {
       content: messageContent,
     });
   };
@@ -40,6 +40,7 @@ const Home = () => {
     try {
       await handleSendMessage(signer); // Call handleSendMessage function
       console.log("SOS message sent successfully");
+      window.alert("SOS message sent successfully");
     } catch (error) {
       console.error("Error sending SOS message:", error);
     }
@@ -117,7 +118,7 @@ const Home = () => {
                 **Emergency Situation**
               </p>
 
-              <p className="font-lato text-white">SOS User : Joe</p>
+              <p className="font-lato text-white">SOS User : Vitalik J</p>
               <p className="font-lato text-white">
                 SOS Location Link : 1212st, Barcelona, Spain
               </p>

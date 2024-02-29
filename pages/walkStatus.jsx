@@ -30,7 +30,7 @@ import initializeFirebaseClient from "../lib/initFirebase";
 const WalkStatus = () => {
   const router = useRouter();
   const [isSosModal, setIsSosModal] = useState(false);
-  const [isOrderId, setIsOrderId] = useState(54);
+  const [isOrderId, setIsOrderId] = useState(55);
   const [selectedBuddyGuard, setSelectedBuddyGuard] = useState(null);
   const [isCurrentBuddyGuard, setIsCurrentBuddyGuard] = useState([]);
   const [selectedRemoveBuddyGuard, setSelectedRemoveBuddyGuard] =
