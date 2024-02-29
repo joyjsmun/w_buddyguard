@@ -24,7 +24,7 @@ Included :
 - SOS message sharing
 - Reputation system
 
-## New features
+## New features for future
 
 - Safety tracking
 - GPS Map Group Members
