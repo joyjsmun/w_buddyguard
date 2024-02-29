@@ -56,7 +56,7 @@ const SafetyTimer = () => {
                   {timer < 10 ? `00:0${timer}` : `00:${timer}`} left
                 </p>
               </div>
-              <div className="rounded-xl bg-gray-300 p-4 mt-4 flex items-center">
+              <div className="rounded-lg bg-gray-300 p-4 mt-4 flex items-center">
                 {/* <Image src={pin1} alt="User location pin" className="w-10 h-10" /> */}
                 <p className="text-base">
                   C/ de Mallorca, 401, Eixample, 08013 Barcelona, Spain

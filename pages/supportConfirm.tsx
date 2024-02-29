@@ -33,7 +33,9 @@ const SupportConfirm = () => {
                     <span className="font-bold mb-2 span-lg">
                       I lost my passport. Anyone can help me?
                     </span>
-                    <span className="font-bold mb-1">Choose Your Buddy</span>
+                    <span className="font-robotoBold mb-1">
+                      Choose Your Buddy
+                    </span>
                     {/* Choose Options */}
                     <div className="flex flex-col space-y-4">
                       <button
@@ -124,9 +126,9 @@ const SupportConfirm = () => {
                     <Image src={talk} className="w-16 h-16" alt="talk" />
                   </div>
                   <button onClick={() => router.push("supportStatus")}>
-                    <div className="bg-[#1B75BC] w-72 h-16 flex flex-col justify-center items-center rounded-xl">
-                      <span className="text-white font-bold text-lg">
-                        Support Request
+                    <div className="bg-[#1B75BC] w-72 h-16 flex flex-col justify-center items-center rounded-lg">
+                      <span className="text-white font-latoBlack text-lg">
+                        SUPPORT REQUEST
                       </span>
                     </div>
                   </button>

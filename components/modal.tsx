@@ -9,7 +9,7 @@ function Modal({ onClickToggleModal, children }) {
           className="mt-4 bg-red-500 text-white py-4 px-2 rounded-lg flex justify-center items-center"
           onClick={onClickToggleModal}
         >
-          <span className="text-center font-bold"> Close</span>
+          <span className="text-center font-latoBlack"> CLOSE</span>
         </div>
       </div>
     </div>

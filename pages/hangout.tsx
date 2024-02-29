@@ -20,14 +20,14 @@ const Hangout = () => {
         <div className="pt-9  flex justify-between items-center">
           <div className="pt-9 px-4 flex flex-col space-y-4">
             <div className="flex flex-row justify-between items-center">
-              <p className="text-[#121418] font-bold text-base">Gm, Joy</p>
+              <p className="text-[#121418] font-bold font-latoBold">Gm, Joy</p>
               <button
                 className="flex flex-row"
                 onClick={() => router.push("Setting")}
               >
                 <div className="flex flex-row items-center">
                   <Image src={pin} alt="Pin" className="w-6 h-6 mr-2" />
-                  <p className="text-[#121418] font-medium text-base">
+                  <p className="text-[#121418] font-latoBold text-base">
                     Current Location : Barcelona
                   </p>
                 </div>
@@ -36,7 +36,7 @@ const Hangout = () => {
             {/* Popular Hangout*/}
             <div className="flex flex-col space-y-2">
               <div className="flex flex-row justify-between">
-                <p className="text-[#121418] font-medium text-lg">
+                <p className="text-[#121418] font-robotoBold  text-lg">
                   Popular Hangout
                 </p>
                 <button
@@ -44,7 +44,7 @@ const Hangout = () => {
                   className="flex flex-row items-center"
                 >
                   <Image src={plus} alt="Plus" className="w-6 h-6 mr-2" />
-                  <p className="font-semibold text-blue-500">Create Hangout</p>
+                  <p className="font-lato text-blue-500">Create Hangout</p>
                 </button>
               </div>
 
@@ -58,7 +58,7 @@ const Hangout = () => {
             </div>
             {/* Gated Hangout*/}
             <div style={{ marginBottom: 20 }}>
-              <p className="text-[#121418] font-medium text-lg mb-4">
+              <p className="text-[#121418] font-robotoBold  text-lg mb-4">
                 Your NFT/POAP can attend these
               </p>
               <div className="flex-row flex-wrap space-x-1">

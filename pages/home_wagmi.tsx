@@ -99,7 +99,7 @@ const Home = () => {
             </div>
           </div>
           <div className="flex flex-col justify-center items-center pt-12">
-            <button className="bg-[#FF5757] px-4 py-3 w-full flex items-center justify-center text-white font-bold text-2xl rounded-xl">
+            <button className="bg-[#FF5757] px-4 py-3 w-full flex items-center justify-center text-white font-bold text-2xl rounded-lg">
               Swipe Hangout
             </button>
           </div>

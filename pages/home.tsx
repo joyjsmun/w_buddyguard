@@ -7,7 +7,7 @@ import InboxIcon from "../public/assets/images/Icons/inbox.png";
 import Image from "next/image";
 
 import Layout from "@/components/layout";
-import { Hangout1, Hangout4 } from "@/public/assets/images";
+import { Hangout1, Hangout4, Hangout5 } from "@/public/assets/images";
 import { ConnectWallet, useSigner } from "@thirdweb-dev/react";
 
 // import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -56,7 +56,7 @@ const Home = () => {
             </button>
             <button onClick={handleSosRequestModal}>
               <div className="w-12 h-12 ml-1 bg-[#FF5757] rounded-2xl flex justify-center items-center">
-                <span className="text-white font-bold">SOS</span>
+                <span className="text-white font-latoBlack">SOS</span>
               </div>
             </button>
           </div>
@@ -66,7 +66,7 @@ const Home = () => {
           style={{ paddingBottom: "60px" }}
         >
           <div className="flex flex-col space-y-2">
-            <h2 className="text-[#121418] font-medium text-lg">
+            <h2 className="text-[#121418] font-robotoBold text-lg">
               Explore Your Neighborhood
             </h2>
             <button onClick={() => router.push("/map")}>
@@ -78,20 +78,20 @@ const Home = () => {
             </button>
           </div>
           <div className="flex flex-col space-y-2">
-            <h2 className="text-[#121418] font-medium text-lg">
+            <h2 className="text-[#121418] font-robotoBold text-lg">
               Upcoming Events
             </h2>
             <div className="flex flex-row items-center space-x-2">
               <div className="flex flex-col w-full space-y-12">
-                {[Hangout1, Hangout4].map((image, index) => (
+                {[Hangout5, Hangout4].map((image, index) => (
                   <button
                     key={index}
                     onClick={() => router.push("/hangout")}
-                    className="w-[95%] h-20"
+                    className="w-[95%] h-24"
                   >
                     <Image
                       src={image}
-                      className="w-full h-28 rounded-lg"
+                      className="w-full h-32 rounded-lg"
                       alt={`Hangout ${index + 1}`}
                     />
                   </button>
@@ -100,36 +100,38 @@ const Home = () => {
             </div>
           </div>
           <div className="flex flex-col justify-center items-center pt-12">
-            <button className="bg-[#FF5757] px-4 py-3 w-full flex items-center justify-center text-white font-bold text-2xl rounded-xl">
-              Swipe Hangout
+            <button className="bg-[#FF5757] px-4 py-3 w-full flex items-center justify-center text-white font-latoBlack text-2xl rounded-lg">
+              SWIPE HANGOUT
             </button>
           </div>
         </div>
 
         {isSosModalOpen && (
           <Modal onClickToggleModal={handleSosRequestModal}>
-            <h3 className="font-bold text-lg pb-2">SOS Message</h3>
-            <p className="mb-3">We Will Send This Msg to the Buddy Guard :</p>
+            <h3 className="font-robotoBold text-lg pb-2">SOS Message</h3>
+            <p className="mb-3 font-lato">
+              We Will Send This Msg to the Buddy Guard :
+            </p>
             <div className="bg-red-500 w-30 h-34 mb-3 flex flex-col justify-center space-y-2 p-3 rounded-lg">
-              <p className="font-bold text-white text-center">
+              <p className="font-robotoBold text-white text-center">
                 **Emergency Situation**
               </p>
 
-              <p className="font-bold text-white">SOS User : Joe</p>
-              <p className="font-bold text-white">
+              <p className="font-lato text-white">SOS User : Joe</p>
+              <p className="font-lato text-white">
                 SOS Location Link : 1212st, Barcelona, Spain
               </p>
-              <p className="font-bold text-white">
+              <p className="font-lato text-white">
                 Personal Contact Number : 987-232-1829
               </p>
             </div>
-            <p className="text-red-500 font-bold leading-5">
+            <p className="text-red-500 font-latoLight leading-5">
               Help will be on the way soon. If possible, provide any additional
               information or updates to the Buddy Guard Group once they arrive
             </p>
             <button
               onClick={() => handleSendSOSMessage(signer)}
-              className="bg-red-500 text-white py-3 px-6 rounded-lg mt-4 w-full"
+              className="bg-red-500 text-white font-latoBlack py-4 px-6 rounded-lg mt-4 w-full"
             >
               Send SOS Message Now
             </button>

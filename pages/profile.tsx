@@ -283,11 +283,11 @@ const Profile = () => {
 
   return (
     <Layout>
-      <div className="bg-white min-h-screen relative mt-12">
+      <div className="bg-white min-h-screen relative mt-16">
         <div className="pt-3 px-4 space-y-4">
           {/* Top Section */}
           <div className="space-y-2">
-            <div className="flex flex-col justify-center items-center w-100 h-50 px-8 py-4 bg-[#F2F2F2] rounded-xl relative">
+            <div className="flex flex-col justify-center items-center w-100 h-50 px-8 py-4 bg-[#F2F2F2] rounded-lg relative">
               <button
                 className="absolute top-2 right-3"
                 onClick={onClickToggleBarcodeModal}
@@ -308,14 +308,14 @@ const Profile = () => {
               </div>
               <div className="text-center">
                 <div className="flex items-center">
-                  <p className="font-bold text-2xl">Vita C</p>
+                  <p className="font-robotoBold text-2xl mr-2">Vitalic J</p>
                   {isVerified ? (
                     <Image src={verified} className="w-9 h-9" alt="Verified" />
                   ) : (
                     <div></div>
                   )}
                 </div>
-                <p className="font-bold text-base">
+                <p className="font-lato text-base">
                   {isUserAddress
                     ? shortenAddressWithChecksum(isUserAddress)
                     : ""}
@@ -328,39 +328,39 @@ const Profile = () => {
             {/* Verified User Info */}
             {isVerified ? (
               <div>
-                <p className="font-bold mb-1">You are a Verified User</p>
+                <p className="font-robotoBold mb-1">You are a Verified User</p>
                 <div className="flex space-x-2">
                   <div className="flex flex-row pl-5 justify-start items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
                     <Image src={verified} className="w-11 h-11" alt="Group" />
-                    <p className="font-bold text-base text-green-500 ">
+                    <p className="font-lato text-base text-gray-900 ">
                       Your Verification is completed with WaltID
                     </p>
                   </div>
                   <button
                     disabled
-                    className="rounded-xl bg-green-500 w-20 h-16 px-2 flex justify-center items-center"
+                    className="rounded-lg bg-green-500 w-20 h-16 px-2 flex justify-center items-center"
                   >
-                    <p className="font-medium text-white">Verified</p>
+                    <p className="font-latoBlack text-white">SUCCESS</p>
                   </button>
                 </div>
               </div>
             ) : (
               <div>
-                <p className="font-bold mb-1">
+                <p className="font-robotoBold mb-1">
                   Please Verify Your Wallet with WaltID
                 </p>
                 <div className="flex space-x-2">
                   <div className="flex flex-row pl-5 justify-start items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
                     <Image src={verified} className="w-11 h-11" alt="Group" />
-                    <p className="font-medium text-base">
+                    <p className="font-lato text-base">
                       Please Click Verify Button
                     </p>
                   </div>
                   <button
                     onClick={onClickToggleVerifiedModal}
-                    className="rounded-xl bg-blue-500 w-16 h-16 flex justify-center items-center"
+                    className="rounded-lg bg-blue-500 w-16 h-16 flex justify-center items-center"
                   >
-                    <p className="font-medium text-white">Verify</p>
+                    <p className="font-latoBlack text-white">Verify</p>
                   </button>
                   {/* WaltID Verification Modal */}
 
@@ -384,20 +384,20 @@ const Profile = () => {
 
             {/* Group Info */}
             <div>
-              <p className="font-bold mb-1">Group Info</p>
+              <p className="font-robotoBold mb-1">Group Info</p>
               <div className="flex space-x-2">
                 <div className="flex flex-row pl-5 justify-start items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
                   <Image src={group2} className="w-11 h-11" alt="Group" />
                   {/* default - Team Buddy Guard*/}
-                  <p className="font-medium text-base">
+                  <p className="font-lato text-base">
                     {groupInfo.groupName || "Team Buddy Guard"}
                   </p>
                 </div>
                 <button
                   onClick={onClickToggleGroupInfoModal}
-                  className="rounded-xl bg-blue-500 w-16 h-16 flex justify-center items-center"
+                  className="rounded-lg bg-blue-500 w-16 h-16 flex justify-center items-center"
                 >
-                  <p className="font-medium text-white">Edit</p>
+                  <p className="font-latoBlack text-white">EDIT</p>
                 </button>
                 {/* Group Info Modal */}
 
@@ -406,17 +406,17 @@ const Profile = () => {
                     {/* Save button */}
                     <div className="h-auto w-full p-2 border-2 border-[#1B75BC] rounded-lg">
                       <div className="flex flex-col">
-                        <span className="font-bold mb-4">
-                          Choose Your Group Name
+                        <span className="font-robotoBold mb-2">
+                          Type Your Group Name
                         </span>
                         <input
                           name="groupName"
                           placeholder="Your Group Name"
                           value={groupInfo.groupName}
                           onChange={handleInputChange}
-                          className="p-4 border-2 border-[#1B75BC] rounded-lg mb-2"
+                          className="font-lato p-4 border-2 border-[#1B75BC] rounded-lg mb-2"
                         />
-                        <span className="font-bold mb-4">
+                        <span className="font-robotoBold mb-2">
                           Group Contract Address
                         </span>
                         <input
@@ -424,11 +424,11 @@ const Profile = () => {
                           value={groupInfo.groupContractAddress}
                           onChange={handleInputChange}
                           placeholder={groupContractAddress || "0x..."}
-                          className="p-4 border-2 border-[#1B75BC] rounded-lg"
+                          className="p-4 font-lato border-2 border-[#1B75BC] rounded-lg"
                         />
                         {/* POAP list */}
 
-                        <span className="font-bold my-4">
+                        <span className="font-robotoBold my-4">
                           Choose POAP Group
                         </span>
                         <div className="flex flex-row justify-between">
@@ -477,7 +477,7 @@ const Profile = () => {
                         </div>
                         {/* NFT list */}
                         <div>
-                          <p className="font-bold my-4">
+                          <p className="font-robotoBold my-4">
                             Choose NFT Collection Group
                           </p>
                           <div className="flex flex-row justify-between">
@@ -531,9 +531,7 @@ const Profile = () => {
                       onClick={saveGroupInfoToFirebase}
                       className="bg-blue-500 rounded-lg p-3 mt-2 flex justify-center items-center  w-full"
                     >
-                      <p className="text-white font-bold text-lg ">
-                        Save Group
-                      </p>
+                      <p className="text-white font-latoBlack  ">SAVE GROUP</p>
                     </button>
                   </Modal>
                 )}
@@ -542,19 +540,17 @@ const Profile = () => {
 
             {/* Personal Info */}
             <div className="">
-              <p className="font-bold mb-1">S0S Private Info</p>
+              <p className="font-robotoBold mb-1">S0S Private Info</p>
               <div className="flex space-x-2">
                 <div className="flex flex-row pl-5 justify-start items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
                   <Image src={lock} className="w-10 h-10" alt="Lock" />
-                  <p className="font-medium text-base">
-                    Encrypted Personal Info
-                  </p>
+                  <p className="font-lato text-base">Encrypted Personal Info</p>
                 </div>
                 <button
                   onClick={onClickTogglePersonalInfoModal}
-                  className="rounded-xl w-16 h-16 flex justify-center items-center bg-blue-500"
+                  className="rounded-lg w-16 h-16 flex justify-center items-center bg-blue-500"
                 >
-                  <p className="font-medium text-white">Add</p>
+                  <p className="font-latoBlack text-white">ADD</p>
                 </button>
                 {/* Personal Information Modal */}
                 {isOpenPersonalInfoModal && (
@@ -586,7 +582,7 @@ const Profile = () => {
                       className="bg-blue-500 rounded-lg p-3 mt-2 flex justify-center items-center  w-full"
                     >
                       <p className="text-white font-bold text-lg ">
-                        Save & Encrypt
+                        SAVE & ENCRYPT
                       </p>
                     </button>
                   </Modal>
@@ -599,12 +595,12 @@ const Profile = () => {
                 className="flex flex-row justify-between items-center pt-4  mb-4 space-x-6
               "
               >
-                <p className="font-bold mb-1">Rewards & Reputation</p>
+                <p className="font-robotoBold mb-1">Rewards & Reputation</p>
                 <button
                   onClick={onClickToggleRewardsInfoModal}
-                  className="rounded-xl bg-blue-500 w-full h-12 flex justify-center items-center"
+                  className="rounded-lg bg-blue-500 w-full h-12 flex justify-center items-center"
                 >
-                  <p className="font-medium text-white">Show Records</p>
+                  <p className="font-latoBlack text-white">CHECK RECORDS</p>
                 </button>
               </div>
               <div className="flex flex-row justify-between space-x-2 ">
@@ -612,7 +608,8 @@ const Profile = () => {
                   <div className="flex flex-row pl-2  justify-between items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[100%] h-16 px-2">
                     <Image src={coin} className="w-12 h-12" alt="Coin" />
                     <p className="font-bold text-base text-center pr-2">
-                      {rewards} BG Token
+                      <span className="font-latoBlack">{rewards}</span>
+                      <span className="font-lato"> BG Token</span>
                     </p>
                   </div>
                 </div>
@@ -624,7 +621,8 @@ const Profile = () => {
                       alt="Coin"
                     />
                     <p className="font-bold text-base pr-4 text-center ">
-                      {reputation} High
+                      <span className="font-latoBlack">{reputation}</span>{" "}
+                      <span className="font-latoBlak text-red-500">High</span>
                     </p>
                   </div>
                 </div>
@@ -633,23 +631,46 @@ const Profile = () => {
             {/* Rewards Information Modal */}
             {isRewardsInfoModal && (
               <Modal onClickToggleModal={onClickToggleRewardsInfoModal}>
-                <p className="font-bold text-lg pb-2 w-full">
+                <p className="font-robotoBold text-lg pb-2 w-full">
                   Your Buddy Guard Records
                 </p>
                 <div>
                   {/* list of records */}
                   {rewardRecords.map((record, index) => (
                     <div key={index} className="border-b-2 pb-2 mb-2">
-                      <p className="font-bold"># {record.orderNumber}</p>
-                      <p>Type: {record.type}</p>
+                      <p className="font-latoBold"># {record.orderNumber}</p>
                       <p>
-                        Date:{" "}
-                        {record.rewardReceivedAt.toDate().toLocaleString()}
+                        <span className="font-latoBold">Type: </span>
+                        <span className="font-lato">{record.type}</span>
+                      </p>
+                      <p>
+                        <span className="font-latoBold">Date: </span>
+                        <span className="font-lato">
+                          {record.rewardReceivedAt.toDate().toLocaleString()}
+                        </span>
                       </p>
 
-                      <p>Reward Amount: {record.rewardAmount}</p>
-                      <p>Total Repuation: {record.totalReputation}</p>
-                      <p>Total Rewards: {record.totalRewards}</p>
+                      <p>
+                        <span className="font-latoBold">Reward Amount:</span>{" "}
+                        <span className="font-lato">{record.rewardAmount}</span>
+                      </p>
+                      <p>
+                        <span className="font-latoBold">Total Repuation:</span>{" "}
+                        <span className="font-lato">
+                          {" "}
+                          {record.totalReputation}
+                        </span>
+                      </p>
+                      <p>
+                        {" "}
+                        <span className="font-latoBold">
+                          Total Rewards:
+                        </span>{" "}
+                        <span className="font-lato">
+                          {" "}
+                          {record.totalRewards}
+                        </span>
+                      </p>
                     </div>
                   ))}
                 </div>

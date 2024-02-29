@@ -66,13 +66,13 @@ const SupportStatus = () => {
               <div className="flex justify-around items-center mt-8">
                 <button
                   onClick={() => router.push("supportRequestInfo")}
-                  className="bg-red-500 text-white font-bold text-lg py-3 px-10 rounded-xl"
+                  className="bg-red-500 text-white font-bold text-lg py-3 px-10 rounded-lg"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => router.push("home")}
-                  className="bg-[#1B75BC] text-white font-bold text-lg py-3 px-10 rounded-xl"
+                  className="bg-[#1B75BC] text-white font-bold text-lg py-3 px-10 rounded-lg"
                 >
                   Finished
                 </button>

@@ -300,21 +300,21 @@ const WalkStatus = () => {
         <div className="px-4 flex w-full flex-col space-y-2">
           {/* Top Section */}
           <div className="flex flex-col space-y-2">
-            <h1 className="font-medium text-lg text-red-400">
-              We are Walking With You ...
+            <h1 className="font-robotoBold text-lg text-red-500">
+              Currently We are Walking With You ...
             </h1>
-
+            {/* 
             <button onClick={() => router.push("/hangout")}>
               <Image
                 className="w-full h-40 mb-2 rounded-lg"
                 src={Map}
                 alt="Map"
               />
-            </button>
+            </button> */}
           </div>
           <div className="rounded-lg bg-gray-200 px-4 py-2 flex flex-col space-y-4">
             <div className="flex flex-col space-y-2">
-              <p className="font-bold">Status</p>
+              <p className="font-robotoBold">Status</p>
               {/* added buddy guard will be added here */}
               {/* Display the selected buddy guard's and current avatar */}
               <div className="flex flex-row space-x-2">
@@ -347,19 +347,19 @@ const WalkStatus = () => {
                 )}
               </div>
 
-              <p className="font-medium">
+              <p className="font-latoLight">
                 {" "}
                 Your Buddy Guard has been walking with you about 7mins
               </p>
             </div>
             <div className="flex flex-col space-y-2">
               <div className="flex flex-row justify-between">
-                <p className="font-bold">Current Location</p>
-                <p className="font-bold text-red-500">1 min left</p>
+                <p className="font-robotoBold">Current Location</p>
+                <p className="font-lato text-red-500">3 min left</p>
               </div>
               <div className="rounded-3xl bg-gray-300 px-4 py-4 flex flex-row items-center space-x-2">
                 <Image src={pin2} className="w-10 h-10" alt="Pin" />
-                <p className="text-base">
+                <p className="text-base font-latoLight">
                   C/ de Mallorca, 401, Eixample, 08013 Barcelona, Spain
                 </p>
               </div>
@@ -395,7 +395,7 @@ const WalkStatus = () => {
             )}
             <div className="flex justify-between">
               <div className="flex flex-col space-y-2">
-                <p className="font-bold mb-2">
+                <p className="font-robotoBold  mb-2">
                   Add / Remove more nearby Buddy Guards
                 </p>
                 <div className="w-full flex flex-row space-x-3">
@@ -416,9 +416,9 @@ const WalkStatus = () => {
                 {selectedBuddyGuard && (
                   <button
                     onClick={handleAddBuddyGuard}
-                    className="bg-[#4F9171] text-white font-bold py-3 w-1/3 rounded-lg"
+                    className="bg-[#4F9171] text-white font-latoBlack py-2 w-1/3 rounded-lg"
                   >
-                    Add
+                    ADD
                   </button>
                 )}
               </div>
@@ -438,15 +438,15 @@ const WalkStatus = () => {
 
               {/* Display remove button for each buddy guard in isCurrentBuddyGuard */}
               {isCurrentBuddyGuard.map((buddyGuard) => (
-                <div key={buddyGuard.id} className="relative">
+                <div key={buddyGuard.id} className="relative py-1">
                   <button
                     onClick={() => handleRemoveBuddyGuard(buddyGuard)}
-                    className="absolute top-3 right-10 bg-red-500 text-white font-bold py-3 w-1/3 rounded-lg items-center justify-center"
+                    className=" absolute top-4 right-10 bg-red-500 text-white font-latoBlack py-2 w-1/3 rounded-lg items-center justify-center"
                   >
-                    remove
+                    REMOVE
                   </button>
                   <Image
-                    className="w-16 h-16 rounded-full relative border-4 border-green-500 p-1"
+                    className="w-16 h-16 rounded-full relative border-4 border-green-500 p-1 "
                     src={buddyGuard.avatar}
                     alt={`Buddy Guard ${buddyGuard.id}`}
                   />
@@ -456,9 +456,9 @@ const WalkStatus = () => {
             <div className="flex justify-around items-center space-x-3">
               <button
                 onClick={() => setIsSosModal(true)}
-                className="bg-[#FF5757] text-white font-bold py-3 w-full rounded-lg"
+                className="bg-[#FF5757] text-white font-latoBlack py-3 w-full rounded-lg"
               >
-                Send SOS
+                SEND SOS
               </button>
               <button
                 onClick={async () => {
@@ -467,9 +467,9 @@ const WalkStatus = () => {
 
                   router.push("/home");
                 }}
-                className="bg-[#4F9171] text-white font-bold py-3 w-full rounded-lg"
+                className="bg-[#4F9171] text-white font-latoBlack py-3 w-full rounded-lg"
               >
-                Arrived
+                ARRIVED
               </button>
             </div>
           </div>

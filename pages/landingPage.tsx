@@ -23,10 +23,10 @@ const LandingPage = () => {
       {/* loading page start */}
       <div className="flex flex-col items-center mt-[15rem] space-y-2">
         <Image className="w-20 h-22 mb-2" src={LogoImage} alt="Logo" />
-        <h1 className="text-center text-3xl font-extrabold text-orange-500">
+        <h1 className="font-blackHans text-center text-3xl font-extrabold text-orange-500">
           Buddy Guard
         </h1>
-        <p className="text-center text-base font-bold text-gray-800">
+        <p className="text-center  text-gray-800 font-robotoMedium text-lg">
           Safety Social dApp
         </p>
       </div>
@@ -35,7 +35,7 @@ const LandingPage = () => {
         className=" absolute bottom-60 w-24 h-24 border-r-2 border-l-2 border-t-4 border-orange-500 rounded-full items-center justify-center"
       >
         <div className="w-20 h-20 flex flex-col ml-[0.4rem] items-center justify-center rounded-full bg-orange-500 animate-pulse">
-          <p className="text-white font-semibold text-xl">Go</p>
+          <p className="text-white font-latoBold text-xl">GO</p>
         </div>
       </button>
     </div>

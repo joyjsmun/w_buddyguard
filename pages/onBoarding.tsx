@@ -25,7 +25,7 @@ const OnBoarding = () => {
       id: "1",
       image: safety,
       title: "Safety First",
-      subtitle: "We keep you safe wherever you go.",
+      subtitle: "We keep you safe wherever you go",
     },
     {
       id: "2",
@@ -36,7 +36,7 @@ const OnBoarding = () => {
     {
       id: "3",
       image: digitalnomad,
-      title: "Big increase in Digital Nomads",
+      title: "Big Increase in Digital Nomads",
       subtitle:
         "There has been a significant increase in the number of digital nomads worldwide since the COVID-19 era",
     },
@@ -77,10 +77,10 @@ const OnBoarding = () => {
           className="w-72 h-72"
           alt={slides[currentSlideIndex].title}
         />
-        <h1 className="text-3xl font-bold text-orange-500 text-center p-5">
+        <h1 className="text-3xl font-robotoBlack text-gray-800 text-center pt-4 px-14">
           {slides[currentSlideIndex].title}
         </h1>
-        <p className="text-base font-bold text-gray-800 p-10 text-center">
+        <p className="text-xl font-latoLight text-gray-800 pt-2 px-7 text-center">
           {slides[currentSlideIndex].subtitle}
         </p>
       </div>
@@ -97,13 +97,13 @@ const OnBoarding = () => {
       </div>
       <div className="flex items-center mt-8">
         <button
-          className="bg-white text-black py-2 px-4 rounded-lg mr-4"
+          className="bg-blue-500 font-robotoMedium text-white py-2 px-6 rounded-lg mr-4"
           onClick={skip}
         >
           Skip
         </button>
         <button
-          className="bg-white text-black py-2 px-4 rounded-lg"
+          className="bg-blue-500 font-robotoMedium text-white py-2 px-6 rounded-lg"
           onClick={goToNextSlide}
         >
           {currentSlideIndex === slides.length - 1 ? "Get Started" : "Next"}

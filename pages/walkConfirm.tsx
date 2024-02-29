@@ -74,8 +74,8 @@ const WalkConfirm = () => {
         <div className="p-4 flex w-full flex-col space-y-2">
           {/* Top Section */}
           <div className="flex flex-col space-y-2">
-            <h1 className="text-gray-900 font-medium text-lg">
-              Where Do You Wanna Go?
+            <h1 className="text-gray-900 font-robotoBold text-lg">
+              Confirm Your Buddy Guard
             </h1>
             <button onClick={() => router.push("/hangout")}>
               <Image
@@ -92,7 +92,9 @@ const WalkConfirm = () => {
               {/* Choose Options */}
               <button
                 className={`flex items-center space-x-4 border-[#4F9171] border-2 rounded-lg py-2 px-6 ${
-                  selectedOption === "buddyGuard" ? "bg-[#4F9171]" : ""
+                  selectedOption === "buddyGuard"
+                    ? "bg-[#4F9171] text-white"
+                    : ""
                 }`}
                 onClick={() => setSelectedOption("buddyGuard")}
               >
@@ -102,12 +104,12 @@ const WalkConfirm = () => {
                   alt="Buddy Guard"
                 />
                 <div className="flex flex-col">
-                  <span className="text-md font-semibold text-left">
+                  <span className="text-md font-robotoMedium text-left">
                     Buddy-Guard(Local)
                   </span>
-                  <div className="flex flex-row space-x-2">
+                  <div className="flex font-latoLight flex-row space-x-2">
                     <span>Near 200m</span>
-                    <span className="font-medium text-[#FF5757]">
+                    <span className="font-latoBold text-[#FF5757]">
                       High Reputation
                     </span>
                   </div>
@@ -116,7 +118,7 @@ const WalkConfirm = () => {
               {/* Add similar buttons for other options */}
               <button
                 className={`flex items-center space-x-4 border-[#4F9171] border-2 rounded-lg py-2 px-6 ${
-                  selectedOption === "julietK" ? "bg-[#4F9171]" : ""
+                  selectedOption === "julietK" ? "bg-[#4F9171] text-white" : ""
                 }`}
                 onClick={() => setSelectedOption("julietK")}
               >
@@ -126,12 +128,12 @@ const WalkConfirm = () => {
                   alt="Juliet K"
                 />
                 <div className="flex flex-col">
-                  <span className="text-md font-semibold text-left">
+                  <span className="text-md font-robotoMedium text-left">
                     Juliet K
                   </span>
                   <div className="flex flex-row space-x-2">
-                    <span>Near 200m</span>
-                    <span className="font-medium text-[#FF5757]">
+                    <span className="font-latoLight">Near 200m</span>
+                    <span className="font-latoBold text-[#FF5757]">
                       High Reputation
                     </span>
                   </div>
@@ -140,7 +142,7 @@ const WalkConfirm = () => {
               {/* Add similar buttons for other options */}
               <button
                 className={`flex items-center space-x-4 border-[#4F9171] border-2 rounded-lg py-2 px-6 ${
-                  selectedOption === "jamesLee" ? "bg-[#4F9171]" : ""
+                  selectedOption === "jamesLee" ? "bg-[#4F9171] text-white" : ""
                 }`}
                 onClick={() => setSelectedOption("jamesLee")}
               >
@@ -150,12 +152,12 @@ const WalkConfirm = () => {
                   alt="James Lee"
                 />
                 <div className="flex flex-col">
-                  <span className="text-md font-semibold text-left">
+                  <span className="text-md font-robotoMedium text-left">
                     James Lee
                   </span>
                   <div className="flex flex-row space-x-2">
-                    <span>Near 200m</span>
-                    <span className="font-medium text-[#FF5757]">
+                    <span className="font-latoLight">Near 200m</span>
+                    <span className="font-latoBold text-[#FF5757]">
                       Med Reputation
                     </span>
                   </div>
@@ -165,23 +167,26 @@ const WalkConfirm = () => {
             {/* Total and duration */}
             <div className="flex flex-col space-y-2">
               <div className="flex justify-end items-center space-x-4">
-                <span className="font-bold text-2xl text-red-500">Total</span>
-                <span className="font-bold text-lg">
-                  5000 Buddy Guard Token
+                <span className="font-robotoMedium text-2xl text-red-500">
+                  Total
+                </span>
+                <span>
+                  <span className="text-lg font-latoBlack">5000 </span>
+                  <span className="font-lato">Buddy Guard Token</span>
                 </span>
               </div>
-              <span className="font-bold text-red-500 text-right">
+              <span className="font-lato text-red-500 text-right">
                 15 mins Away to Your Destination
               </span>
             </div>
             {/* Confirm Button */}
             <button
-              className="bg-[#4F9171] px-4 py-3 w-full flex items-center justify-center text-white font-bold text-2xl rounded-xl"
+              className="bg-[#4F9171] px-4 py-3 w-full flex items-center justify-center text-white font-latoBlack text-2xl rounded-lg"
               onClick={async () => {
                 await HandleCreateOrder();
               }}
             >
-              Confirm Buddy Guard
+              CONFIRM BUDDY GUARD
             </button>
           </div>
         </div>

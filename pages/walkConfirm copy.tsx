@@ -172,7 +172,7 @@ const WalkConfirm = () => {
               //     await handleContractInteraction();
               //     history.push("/walkStatus");
               //   }}
-              className="bg-[#4F9171] px-4 py-3 w-full flex items-center justify-center text-white font-bold text-2xl rounded-xl"
+              className="bg-[#4F9171] px-4 py-3 w-full flex items-center justify-center text-white font-bold text-2xl rounded-lg"
               onClick={() => router.push("walkStatus")}
             >
               Confirm Buddy Guard

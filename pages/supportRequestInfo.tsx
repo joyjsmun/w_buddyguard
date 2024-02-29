@@ -18,7 +18,7 @@ const SupportRequestInfo = () => {
         <div className="p-4 flex w-full flex-col space-y-4">
           {/* Top Section */}
           <div className="flex flex-col space-y-2">
-            <h1 className="text-[#121418] font-medium text-lg">
+            <h1 className="text-[#121418] font-robotoBold text-lg">
               Do You Need Some Help?
             </h1>
             <button onClick={() => router.push("/hangout")}>
@@ -33,8 +33,8 @@ const SupportRequestInfo = () => {
           <div className="rounded-lg bg-[#F2F2F2] p-4 flex flex-col space-y-6">
             {/* Request Description */}
             <div className="flex flex-row items-center ml-2">
-              <div className="flex flex-col space-y-2 w-full">
-                <label htmlFor="requestDescription" className="font-bold">
+              <div className="flex flex-col space-y-2 w-full font-robotoBold">
+                <label htmlFor="requestDescription" className="font-robotoBold">
                   Request Description
                 </label>
                 <div className="relative">
@@ -56,7 +56,7 @@ const SupportRequestInfo = () => {
             {/* When Needed */}
             <div className="flex flex-row items-center ml-2">
               <div className="flex flex-col space-y-2  w-full">
-                <label htmlFor="whenNeeded" className="font-bold mb-2">
+                <label htmlFor="whenNeeded" className="font-robotoBold mb-2 ">
                   When Do You Need This Help?
                 </label>
                 <div className="relative">
@@ -79,7 +79,7 @@ const SupportRequestInfo = () => {
             {/* Location */}
             <div className="flex flex-row items-center ml-2">
               <div className="flex flex-col space-y-2">
-                <label htmlFor="location" className="font-bold">
+                <label htmlFor="location" className="font-robotoBold">
                   Where Do You Need Help?
                 </label>
                 <div className="w-72 p-1 pl-12 border-[#1B75BC] border-2 tex-lg rounded-lg">
@@ -95,9 +95,9 @@ const SupportRequestInfo = () => {
             {/* Next Button */}
             <button
               onClick={() => router.push("supportConfirm")}
-              className="bg-[#1B75BC] px-4 py-3 w-full flex items-center justify-center text-white font-bold text-2xl rounded-xl"
+              className="bg-[#1B75BC] px-4 py-3 w-full flex items-center justify-center text-white font-latoBlack text-2xl rounded-lg"
             >
-              Next
+              NEXT
             </button>
           </div>
         </div>
