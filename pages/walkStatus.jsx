@@ -30,7 +30,7 @@ import initializeFirebaseClient from "../lib/initFirebase";
 const WalkStatus = () => {
   const router = useRouter();
   const [isSosModal, setIsSosModal] = useState(false);
-  const [isOrderId, setIsOrderId] = useState(40);
+  const [isOrderId, setIsOrderId] = useState(54);
   const [selectedBuddyGuard, setSelectedBuddyGuard] = useState(null);
   const [isCurrentBuddyGuard, setIsCurrentBuddyGuard] = useState([]);
   const [selectedRemoveBuddyGuard, setSelectedRemoveBuddyGuard] =
@@ -53,6 +53,8 @@ const WalkStatus = () => {
   const handleSelectBuddyGuard = (buddyGuard) => {
     setSelectedBuddyGuard(buddyGuard);
   };
+
+  // Add Guardian
 
   const handleAddBuddyGuard = async () => {
     if (!selectedBuddyGuard) {
@@ -78,12 +80,14 @@ const WalkStatus = () => {
     setSelectedBuddyGuard(null);
   };
 
-  console.log("remove", selectedBuddyGuard);
+  // Remove Guardian
   const handleRemoveBuddyGuard = async (buddyGuardToRemove) => {
     if (!buddyGuardToRemove) {
       console.error("No buddy guard selected for removal.");
       return;
     }
+
+    handleChangeGuardians();
 
     // Add the selected buddy guard back to the nearbyBuddyGuards list
     setNearbyBuddyGuards((prevNearbyBuddyGuards) => [
@@ -97,13 +101,10 @@ const WalkStatus = () => {
         (guard) => guard.id !== buddyGuardToRemove.id
       );
 
-      console.log("remove1", selectedRemoveBuddyGuard);
-
-      // Call handleChangeGuardians only if buddyGuardToRemove is not null
-      if (buddyGuardToRemove && buddyGuardToRemove.address) {
-        handleChangeGuardians(null, buddyGuardToRemove);
-      }
-      console.log("remove2", selectedRemoveBuddyGuard);
+      // // Call handleChangeGuardians only if buddyGuardToRemove is not null
+      // if (buddyGuardToRemove && buddyGuardToRemove.address) {
+      //   handleChangeGuardians(null, buddyGuardToRemove); // Pass buddyGuardToRemove here
+      // }
 
       return updatedCurrentBuddyGuards;
     });
@@ -173,6 +174,10 @@ const WalkStatus = () => {
       await tx.wait(); // Wait for the transaction to be mined
 
       console.log("Guardians changed successfully");
+      console.log("Guardians to add:", guardiansToAdd);
+      console.log("Guardians to remove:", guardiansToRemove);
+
+      window.alert("Guardians changed successfully");
     } catch (error) {
       console.error("Error changing guardians:", error);
     }
@@ -336,7 +341,7 @@ const WalkStatus = () => {
                     />
                   </button>
                 )}
-                {isCurrentBuddyGuard.length > 0 && (
+                {/* {isCurrentBuddyGuard.length > 0 && (
                   <button className="">
                     <Image
                       className="w-16 h-16 rounded-full relative border-4 border-green-500 p-1"
@@ -344,7 +349,7 @@ const WalkStatus = () => {
                       alt={`Buddy Guard ${isCurrentBuddyGuard[0].id}`}
                     />
                   </button>
-                )}
+                )} */}
               </div>
 
               <p className="font-latoLight">
@@ -360,7 +365,7 @@ const WalkStatus = () => {
               <div className="rounded-3xl bg-gray-300 px-4 py-4 flex flex-row items-center space-x-2">
                 <Image src={pin2} className="w-10 h-10" alt="Pin" />
                 <p className="text-base font-latoLight">
-                  C/ de Mallorca, 401, Eixample, 08013 Barcelona, Spain
+                  La Sagrada Familia, Barcelona, Spain
                 </p>
               </div>
             </div>

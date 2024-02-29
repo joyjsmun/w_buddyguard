@@ -49,6 +49,9 @@ const Profile = () => {
   const [isVerifiedModal, setIsVerifiedModal] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [isUserAddress, setIsUserAddress] = useState("");
+  // const [isVerificationModal, setIsVerificationModal] = useState(false);
+
+  const [waltIdCert, setWaltIdCert] = useState(null);
 
   const [rewards, setRewards] = useState(0); // State to store total rewards score
   const [reputation, setReputation] = useState(0); // State to store total reputation score
@@ -205,6 +208,9 @@ const Profile = () => {
       console.log("Verifiable Credential Issued:", response.data);
       alert("Verification successful!");
 
+      const waltIdCertResponse = response.data;
+      setWaltIdCert(waltIdCertResponse);
+
       const { auth, db } = initializeFirebaseClient();
       const user = auth.currentUser;
       if (user) {
@@ -266,6 +272,10 @@ const Profile = () => {
   const onClickToggleVerifiedModal = useCallback(() => {
     setIsVerifiedModal(!isVerifiedModal);
   }, [isVerifiedModal]);
+
+  // const onClickToggleVerificationModal = useCallback(() => {
+  //   setIsVerificationModal(!isVerificationModal);
+  // }, [isVerificationModal]);
 
   const onSaveAndEncrypt = useCallback(() => {
     setPersonalInfoSaved(true);
@@ -329,6 +339,13 @@ const Profile = () => {
             {isVerified ? (
               <div>
                 <p className="font-robotoBold mb-1">You are a Verified User</p>
+                {/* <button onClick={onClickToggleVerificationModal}>Link</button> */}
+                {/* <Modal onClickToggleModal={onClickToggleVerificationModal}>
+                  <div>
+                    <span className="font-latoBold">WaltId Certif</span>
+                    <div>{waltIdCert}</div>
+                  </div>
+                </Modal> */}
                 <div className="flex space-x-2">
                   <div className="flex flex-row pl-5 justify-start items-center space-x-5 rounded-lg bg-[#F2F2F2] w-[80%] h-16">
                     <Image src={verified} className="w-11 h-11" alt="Group" />

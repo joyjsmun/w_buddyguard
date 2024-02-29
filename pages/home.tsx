@@ -28,7 +28,7 @@ const Home = () => {
     // Initialize wallet user, pass 'prod' instead of 'staging' for mainnet apps
     const userAlice = await PushAPI.initialize(signer, { env: "staging" });
 
-    const messageContent = `Emergency Situation\nSOS User: Joe\nSOS Location Link: 1212st, Barcelona, Spain\nPersonal Contact Number: 987-232-1829`;
+    const messageContent = `Emergency Situation\nSOS User: Vitalik J\nSOS Location Link: La Sagrada Familia, Barcelona, Spain\nPersonal Contact Number: 987-232-1829`;
 
     // Send a message to Bob
     await userAlice.chat.send("0x7C81461eE3EfEc10CC6BB3A3DbBA3CCA9B0EF127", {
