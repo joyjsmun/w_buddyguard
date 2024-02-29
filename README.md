@@ -13,7 +13,10 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
+```
+
 ## Learn More
+
 Included :
 
 - Deployed in Arbitrum testnet
@@ -29,6 +32,3 @@ Included :
 - Safety tracking
 - GPS Map Group Members
 - Hangout Feature (=Event matching)
-
-
-```
